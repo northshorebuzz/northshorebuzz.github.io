@@ -11,8 +11,8 @@ body,p,li,span,a,label,input,textarea,select,button{font-family: var(--font-body
    Home page rows "Currently on the Market" (data-lc="active") and
    "Recently Sold" (data-lc="sold"). Drawn from each slot's custom values. */
 .lc-src{display:none}
-.lc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:44px;max-width:1100px;margin:0 auto}
-.lc-card{display:flex;flex-direction:column;border:1px solid color-mix(in srgb,var(--brand-soft) 45%,transparent);text-decoration:none !important;color:inherit;background:transparent;transition:box-shadow .3s ease}
+.lc-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:44px;max-width:1100px;margin:0 auto}
+.lc-card{flex:0 1 calc(50% - 22px);min-width:min(100%,320px);display:flex;flex-direction:column;border:1px solid color-mix(in srgb,var(--brand-soft) 45%,transparent);text-decoration:none !important;color:inherit;background:transparent;transition:box-shadow .3s ease}
 .lc-card:hover{box-shadow:0 14px 40px color-mix(in srgb,var(--brand-primary) 14%,transparent)}
 .lc-pic{position:relative;aspect-ratio:3/2;overflow:hidden;background:var(--brand-light)}
 .lc-pic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
@@ -26,5 +26,6 @@ body,p,li,span,a,label,input,textarea,select,button{font-family: var(--font-body
 .lc-specs{margin:0 0 22px !important;font-size:12px !important;letter-spacing:.12em;text-transform:uppercase;color:var(--brand-text) !important}
 .lc-btn{margin-top:auto;align-self:center;border:1px solid var(--brand-accent);color:var(--brand-accent);font-family:var(--font-body);font-weight:var(--weight-label);font-size:13px;letter-spacing:.2em;text-transform:uppercase;padding:14px 34px;transition:background-color .3s ease,color .3s ease}
 .lc-card:hover .lc-btn{background:var(--brand-accent);color:var(--brand-white)}
+@media (max-width:760px){.lc-card{flex-basis:100%}}
 @media (max-width:600px){.lc-grid{gap:28px}.lc-body{padding:22px}.lc-address{font-size:22px !important}}
 @media (prefers-reduced-motion: reduce){.lc-pic img,.lc-card{transition:none}.lc-card:hover .lc-pic img{transform:none}}
