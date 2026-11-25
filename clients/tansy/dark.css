@@ -1,7 +1,7 @@
-/* Loaded on Home Variation 2 only (that page's own Head code):
+/* Loaded on the Home page only (that page's own Head code):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/dark.css">
 */
-/* Tansy Dark CSS Version 19 - loads on Home Variation 2 only */
+/* Tansy Dark CSS Version 20 - loads on Home Variation 2 only */
 :root{--dark-night:#012A38;--dark-band:#00374B;--dark-lift:#0B4A5F;--dark-line:rgba(135,182,190,.25);--driftwood:#E4D8C4}
 html,html body{background-color:var(--dark-night) !important}
 /* Section backgrounds. Skips the "Testimonials REMax" section (section-5hmbjKMMEf) so its
@@ -38,7 +38,7 @@ html body .c-section.section-ZShLp81IPk.section-ZShLp81IPk{border-top:0 !importa
 html body img[src*="6af102d03f4edcbb004e6f8e"]{-webkit-mask-image:none !important;mask-image:none !important;filter:none !important;box-shadow:none !important;border:2px solid var(--brand-accent) !important;box-sizing:border-box !important}
 /* Image-only columns sit on the bottom of the row. The builder centres a column's content
    vertically, so when the text beside it is taller the photo floated with a gap underneath. */
-html body .c-column:has(.c-image):not(:has(.c-heading, .c-paragraph, .c-button)) .vertical.inner{justify-content:flex-end !important}
+html body .c-row:has(.c-heading) .c-column:has(.c-image):not(:has(.c-heading, .c-paragraph, .c-button)) .vertical.inner{justify-content:flex-end !important}
 /* Testimonials REMax section: Testimonials button in Deep Teal (outline + text), so it reads on
    the light background; hover fills Deep Teal with gold text */
 html body .c-section.section-5hmbjKMMEf.section-5hmbjKMMEf.section-5hmbjKMMEf.section-5hmbjKMMEf .c-button a,html body .c-section.section-5hmbjKMMEf.section-5hmbjKMMEf.section-5hmbjKMMEf.section-5hmbjKMMEf .c-button button{border-color:var(--brand-primary) !important;color:var(--brand-primary) !important}
