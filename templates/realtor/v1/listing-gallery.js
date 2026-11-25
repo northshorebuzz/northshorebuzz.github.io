@@ -2,7 +2,7 @@
    NSB LISTING GALLERY SCRIPT (Version 31)
    Shared by every realtor client. Loaded site-wide from the Body
    tracking code with ONE line:
-     <script src="https://buzz-png.github.io/nsb-widgets/realtor/listing-gallery.js" defer></script>
+     <script src="https://northshorebuzz.github.io/templates/realtor/v1/listing-gallery.js" defer></script>
    Styles live in realtor/master.css (.lg-*). The page only holds the
    [data-lg] markup fed by the listing_NN_gallery custom value.
    ============================================================ */

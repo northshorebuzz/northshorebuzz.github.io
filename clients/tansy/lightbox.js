@@ -1,7 +1,7 @@
 /* ============================================================
    TANSY SVERRE HOMES — GALLERY LIGHTBOX (Version 17)
    Loaded site-wide from the Body tracking code with ONE line:
-     <script src="https://buzz-png.github.io/nsb-widgets/tansy/lightbox.js" defer></script>
+     <script src="https://northshorebuzz.github.io/clients/tansy/lightbox.js" defer></script>
    Click any image in an Image Slider (or any image with the class
    "lightbox") to open it full screen. Arrows / swipe to flick through,
    Esc / X / click outside to close.

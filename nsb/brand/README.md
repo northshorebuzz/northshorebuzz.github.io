@@ -7,7 +7,7 @@ One page that shows a client's brand inside the NSB CRM: quick links, fonts, tap
 - `index.html` is the one template for every client.
 - `brands/<location id>.json` holds one client's details.
 - One custom menu link in the NSB CRM opens:
-  `https://buzz-png.github.io/nsb-widgets/brand/?id={{location.id}}`
+  `https://northshorebuzz.github.io/nsb/brand/?id={{location.id}}`
   HighLevel fills in the sub-account's ID, so each client sees their own brand.
 - No file for that ID → the page says "No brand set up for this account yet."
 

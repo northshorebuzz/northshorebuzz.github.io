@@ -1,7 +1,7 @@
 /* ============================================================
    BIRG — "Get SMS updates on this home" pop-up
    Loaded on each listing page with ONE line:
-     <script src="https://buzz-png.github.io/nsb-widgets/birg/sms-popup.js" defer></script>
+     <script src="https://northshorebuzz.github.io/clients/birg/sms-popup.js" defer></script>
 
    On listing pages (/property/...) it reads the address (H1),
    WordPress listing ID (postid-####) and photo (og:image),
@@ -32,8 +32,8 @@
     signoff: "Frances & Jade",
     similarButton: "Take a 1-minute quiz",
     quizUrl: "https://listing-matches.vibepreview.app/quiz/bowen",
-    teamPhoto: "https://buzz-png.github.io/nsb-widgets/birg/frances-jade.jpg", // top photo on screen 2 ("" = keep the home photo)
-    loaderLogo: "https://buzz-png.github.io/nsb-widgets/birg/birg-logo-white.svg" // shown on green while the quiz loads
+    teamPhoto: "https://northshorebuzz.github.io/clients/birg/frances-jade.jpg", // top photo on screen 2 ("" = keep the home photo)
+    loaderLogo: "https://northshorebuzz.github.io/clients/birg/birg-logo-white.svg" // shown on green while the quiz loads
   };
   // ------------------------------------------------------------------
 
@@ -188,7 +188,7 @@
     var signup = { cid: "" };
     var current = { address: "", id: "" };
     window.addEventListener("message", function (e) {
-      if (e.origin === "https://buzz-png.github.io" && e.data && e.data.qf === "thanks") {
+      if ((e.origin === "https://northshorebuzz.github.io" || e.origin === "https://buzz-png.github.io") && e.data && e.data.qf === "thanks") {
         signup.cid = String(e.data.cid || "");
         // Snappy: swap to screen 2 the moment the form says it's done (no page reload)
         try { localStorage.setItem("birgSmsSignedUp:" + location.pathname, "1"); } catch (err) {}

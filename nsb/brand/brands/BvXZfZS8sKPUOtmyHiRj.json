@@ -83,7 +83,7 @@
   "dev": [
     {
       "label": "Website: SMS updates pop-up (listing pages)",
-      "code": "<script src=\"https://buzz-png.github.io/nsb-widgets/birg/sms-popup.js\" defer></script>"
+      "code": "<script src=\"https://northshorebuzz.github.io/clients/birg/sms-popup.js\" defer></script>"
     }
   ]
 }
