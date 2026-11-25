@@ -26,6 +26,10 @@ Fields:
 - `colours[]`: 6-digit hex, no alpha.
 - `logos[]`: `url` (relative to brand/) + `bg` tile colour. White logos go on the brand's dark colour.
 - `dev[]`: developer code (site script lines). Shown in a closed "Developer code" section at the bottom.
+- `template`: the site's template, e.g. `realtor/v1`. The page then shows that template's class names (`templates/<template>/classes.json`) with tap-to-copy. Leave it out for bespoke (Level 3) sites.
+- `classes[]`: optional client-only class groups, same shape as a group in classes.json (`name`, `where`, `items[]` of `name`/`does`/`alias`). Shown after the template's list, marked "<client> only".
+
+When Claude adds a class to a template's master.css, it adds a row to that template's classes.json in the same push. A client-only class goes in that client's brand file under `classes`.
 
 The page shows an "Open in new tab" button when it's inside the CRM, so it can sit beside a build.
 
@@ -34,3 +38,4 @@ The page shows an "Open in new tab" button when it's inside the CRM, so it can s
 | Client | Location ID | Added |
 |---|---|---|
 | BIRG | BvXZfZS8sKPUOtmyHiRj | 2026-11-21 |
+| Tansy Sverre | gjbfEVD4yOjW0MzRQBif | 2026-11-24 |

@@ -1,0 +1,51 @@
+{
+  "template": "realtor/v1",
+  "updated": "2026-11-24",
+  "note": "Class names in templates/realtor/v1/master.css. Shown in the Brand Hub. Add a row here whenever a class is added to master.css.",
+  "groups": [
+    {
+      "name": "Buttons",
+      "where": "Put on the Button element.",
+      "items": [
+        { "name": "btn-primary", "does": "Solid primary colour, turns accent on hover.", "alias": "btn-teal" },
+        { "name": "btn-accent", "does": "Solid accent colour, turns primary on hover.", "alias": "btn-gold" },
+        { "name": "btn-outline", "does": "See-through, thin primary border. Hover fills primary, text turns accent." },
+        { "name": "btn-accent-outline", "does": "See-through, thin accent border and accent text. Hover fills primary.", "alias": "btn-gold-outline" }
+      ]
+    },
+    {
+      "name": "Sections",
+      "where": "Put on the Section.",
+      "items": [
+        { "name": "section-mist", "does": "Light background." },
+        { "name": "section-primary", "does": "Primary-colour background, white text.", "alias": "section-teal" },
+        { "name": "listing-bar", "does": "Listing strip: small location label, big accent address, white price." },
+        { "name": "spec-grid", "does": "Property Summary cards become clean columns with thin dividers." },
+        { "name": "site-footer", "does": "On the Footer section: links and icons turn accent on hover.", "alias": "footer-gold" }
+      ]
+    },
+    {
+      "name": "Headings and text",
+      "where": "Put on the Heading or Paragraph element.",
+      "items": [
+        { "name": "eyebrow", "does": "Small tracked-caps label above a heading." },
+        { "name": "accent-rule", "does": "Short accent line under a heading.", "alias": "gold-rule" },
+        { "name": "accent-rule-center", "does": "The same line, centred.", "alias": "gold-rule-center" }
+      ]
+    },
+    {
+      "name": "Images",
+      "where": "Put on the Image element.",
+      "items": [
+        { "name": "img-hover", "does": "Image zooms in slowly on hover." },
+        { "name": "lightbox", "does": "A single image opens full screen on click. Image Sliders do this already." }
+      ]
+    }
+  ],
+  "automatic": [
+    "Headings, body text, bullets and in-text links take the brand fonts and colours.",
+    "The header (the section holding the menu) styles its menu links and Contact button itself.",
+    "Image Sliders open full screen on click.",
+    "Text pasted from REALTOR.ca is cleaned back to body style."
+  ]
+}

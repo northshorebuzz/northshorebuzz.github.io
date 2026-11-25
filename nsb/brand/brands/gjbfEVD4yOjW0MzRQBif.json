@@ -1,0 +1,36 @@
+{
+  "client": "Tansy Sverre",
+  "name": "Tansy Sverre Homes",
+  "locationId": "gjbfEVD4yOjW0MzRQBif",
+  "updated": "2026-11-24",
+  "source": "Tansy's brand.css (clients/tansy/brand.css) and the realtor template class list",
+  "template": "realtor/v1",
+  "fonts": [
+    { "name": "Montserrat", "role": "Headings" },
+    { "name": "Montserrat", "role": "Body (Light and Regular)" }
+  ],
+  "colours": [
+    { "name": "Deep Teal", "hex": "#00374B" },
+    { "name": "Summit Gold", "hex": "#D9943B" },
+    { "name": "Tide Blue", "hex": "#87B6BE" },
+    { "name": "Ink", "hex": "#2C4650" },
+    { "name": "Mist", "hex": "#EEF4F5" }
+  ],
+  "logos": [
+    {
+      "label": "Logo · white",
+      "url": "https://assets.cdn.filesafe.space/gjbfEVD4yOjW0MzRQBif/media/6ac800dd0762cee30169272d.png",
+      "bg": "#00374B"
+    }
+  ],
+  "dev": [
+    {
+      "label": "Website Head code: site CSS (after GTM)",
+      "code": "<link rel=\"stylesheet\" href=\"https://northshorebuzz.github.io/clients/tansy/brand.css\">\n<link rel=\"stylesheet\" href=\"https://northshorebuzz.github.io/templates/realtor/v1/master.css\">"
+    },
+    {
+      "label": "Website Body code: scripts (after GTM noscript)",
+      "code": "<script src=\"https://northshorebuzz.github.io/clients/tansy/lightbox.js\" defer></script>\n<script src=\"https://northshorebuzz.github.io/templates/realtor/v1/listing-gallery.js\" defer></script>"
+    }
+  ]
+}
