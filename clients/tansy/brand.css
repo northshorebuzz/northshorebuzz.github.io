@@ -1,5 +1,5 @@
 /* ============================================================
-   TANSY SVERRE HOMES — BRAND CSS (Version 32)
+   TANSY SVERRE HOMES — BRAND CSS (Version 33)
    Loaded site-wide from the Head tracking code (load BEFORE master.css):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/brand.css">
    Claude edits this file and pushes. GitHub Pages updates in ~1–10 min.
@@ -13,3 +13,13 @@ html body .lc-card .lc-address,html body .lc-card .lc-price{color:var(--brand-wh
 html body .lc-card .lc-specs{color:color-mix(in srgb,var(--brand-white) 80%,transparent) !important}
 html body .lc-card .lc-rule{border-top-color:color-mix(in srgb,var(--brand-white) 22%,transparent) !important}
 html body .lc-card:hover{box-shadow:0 14px 40px color-mix(in srgb,var(--brand-primary) 35%,transparent) !important}
+
+/* Link in bio page (Version 33). The page's own builder styles call gold "--brand-primary",
+   which clashed with ours (teal) and hid the name and buttons. Restore them here, scoped. */
+html body .section-link-in-bio-stack{--brand-primary:#D9943B;--brand-accent:#87B6BE;--brand-text-main:#FFFFFF;background:radial-gradient(ellipse at top,#0B4A5F 0%,#00374B 45%,#012A38 100%) !important;min-height:100vh}
+html body .section-link-in-bio-stack h1,html body .section-link-in-bio-stack h2,html body .section-link-in-bio-stack h2 *{color:#FFFFFF !important}
+html body .section-link-in-bio-stack .c-paragraph p,html body .section-link-in-bio-stack .c-paragraph p *{color:#87B6BE !important}
+html body .section-link-in-bio-stack .c-button a,html body .section-link-in-bio-stack .c-button button{background:rgba(255,255,255,.04) !important;border:1px solid #D9943B !important;color:#FFFFFF !important;transition:background-color .25s ease,color .25s ease !important}
+html body .section-link-in-bio-stack .c-button a *,html body .section-link-in-bio-stack .c-button button *{color:inherit !important}
+html body .section-link-in-bio-stack .c-button a:hover,html body .section-link-in-bio-stack .c-button button:hover{background:#D9943B !important;color:#012A38 !important}
+html body .section-link-in-bio-stack .c-image img.img-circle{content:url(https://images.leadconnectorhq.com/image/f_webp/q_80/r_400/u_https://assets.cdn.filesafe.space/gjbfEVD4yOjW0MzRQBif/media/6af102d03f4edcbb004e6f8e.png) !important;object-fit:cover !important;object-position:center 18% !important;border:2px solid #D9943B !important}
