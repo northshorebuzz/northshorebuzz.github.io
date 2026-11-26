@@ -1,40 +1,38 @@
 /*
-  BIRG Contact iframe — parent side (WordPress)  · v2
-  What: builds the white wrapper + NSB CRM Contact Us iframe inside #birg-contact,
+  BIRG page iframes — parent side (WordPress)  · v3
+  What: builds the white wrapper + NSB CRM page iframe inside each .birg-embed,
         resizes it to its content (no inner scrollbar), and follows the thank-you
         redirect in the top window so GTM fires.
   Everything about the embed (URL, width, spacing) lives here, so changes are a
   push to GitHub — the WordPress block never needs editing.
-  WordPress Contact page, Custom HTML block (the whole block):
-    <div id="birg-contact"></div>
+  WordPress Custom HTML block (the whole block). data-page = the NSB CRM page path:
+    <div class="birg-embed" data-page="about-us"></div>
     <script src="https://northshorebuzz.github.io/clients/birg/contact-embed.js" defer></script>
+  The Contact page's older <div id="birg-contact"></div> still works (= contact-us).
+  v3: one script for any page (Contact, About Us, ...).
   Pairs with: clients/birg/contact-child.js (on the NSB CRM site)
 */
 (function () {
   var CONFIG = {
-    src: 'https://homesonbowenisland.com/contact-us',
     origin: 'https://homesonbowenisland.com',
-    title: 'Contact Bowen Island Real Estate Group',
     maxWidth: '1170px',          // keep above 768px so the page uses its desktop layout
     startHeight: '1100px',       // used until the page reports its real height
     outerPadding: '0 16px 40px',
     background: '#ffffff'
   };
 
-  function build() {
-    var host = document.getElementById('birg-contact');
-    var frame = document.getElementById('birg-contact-iframe');
-    if (frame || !host) return frame;
-
+  function buildOne(host, page) {
+    if (host.querySelector('iframe')) return;
     var outer = document.createElement('div');
     outer.style.cssText = 'background:' + CONFIG.background + ';padding:' + CONFIG.outerPadding + ';';
     var inner = document.createElement('div');
     inner.style.cssText = 'max-width:' + CONFIG.maxWidth + ';margin:0 auto;';
 
-    frame = document.createElement('iframe');
-    frame.id = 'birg-contact-iframe';
-    frame.src = CONFIG.src;
-    frame.title = CONFIG.title;
+    var frame = document.createElement('iframe');
+    frame.className = 'birg-embed-iframe';
+    if (page === 'contact-us') frame.id = 'birg-contact-iframe';
+    frame.src = CONFIG.origin + '/' + page;
+    frame.title = 'Bowen Island Real Estate Group';
     frame.setAttribute('scrolling', 'no');
     frame.style.cssText = 'width:100%;height:' + CONFIG.startHeight +
       ';border:0;border-radius:0;display:block;overflow:hidden;';
@@ -42,12 +40,26 @@
     inner.appendChild(frame);
     outer.appendChild(inner);
     host.appendChild(outer);
-    return frame;
+  }
+
+  function build() {
+    var old = document.getElementById('birg-contact');
+    if (old) buildOne(old, 'contact-us');
+    var hosts = document.querySelectorAll('.birg-embed[data-page]');
+    for (var i = 0; i < hosts.length; i++) {
+      var page = hosts[i].getAttribute('data-page').replace(/^\/+|\/+$/g, '');
+      if (/^[a-z0-9-]+$/.test(page)) buildOne(hosts[i], page);
+    }
   }
 
   window.addEventListener('message', function (e) {
     if (e.origin !== CONFIG.origin || !e.data || typeof e.data !== 'object') return;
-    var frame = document.getElementById('birg-contact-iframe');
+    // Find the iframe that sent this message
+    var frames = document.querySelectorAll('iframe');
+    var frame = null;
+    for (var i = 0; i < frames.length; i++) {
+      if (frames[i].contentWindow === e.source) { frame = frames[i]; break; }
+    }
     if (!frame) return;
 
     if (e.data.type === 'nsb-height' && e.data.height > 0) {

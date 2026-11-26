@@ -1,5 +1,5 @@
 /*
-  BIRG Contact iframe — child side (NSB CRM site homesonbowenisland.com)  · v1
+  BIRG Contact iframe — child side (NSB CRM site homesonbowenisland.com)  · v2
   What: only acts when a page is shown inside bowenislandrealestate.com.
     1. Adds .nsb-in-iframe to <html> (brand.css hides our header/footer then).
     2. Sends the page height to WordPress so the iframe fits (no inner scrollbar).
@@ -20,7 +20,7 @@
   } catch (e) {}
   if (!PARENT_RE.test(parentOrigin)) return;        // only talk to the BIRG site
 
-  var EMBED_PATHS = ['/contact-us'];                // pages meant to live in the iframe
+  var EMBED_PATHS = ['/contact-us', '/about-us'];  // pages meant to live in an iframe (v2: + About Us)
   var path = window.location.pathname.replace(/\/+$/, '') || '/';
 
   // 3. Landed on another page (thank-you etc.): open it in the full window
