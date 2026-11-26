@@ -94,6 +94,10 @@
         {
           "name": "contact-photo",
           "does": "Holds the team photo at 560px wide, centred."
+        },
+        {
+          "name": "photo-border",
+          "does": "2px BIRG green frame, square corners."
         }
       ]
     },

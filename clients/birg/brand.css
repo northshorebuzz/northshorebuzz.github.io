@@ -1,5 +1,5 @@
 /* ============================================================
-   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 8)
+   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 9)
    Site: homesonbowenisland.com (NSB CRM website, BIRG sub-account BvXZfZS8sKPUOtmyHiRj)
    Loaded site-wide from the website's Head tracking code:
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/birg/brand.css">
@@ -53,6 +53,10 @@ html body .c-button a:hover,html body .c-button button:hover{background:var(--br
 /* v5: width 100% so it shrinks to fit phones (v2 overflowed on mobile) */
 html body .contact-photo{display:block !important;width:100% !important;max-width:560px !important;height:auto !important;margin-left:auto !important;margin-right:auto !important}
 html body .contact-photo img{width:100% !important;height:auto !important}
+
+/* Photo border: 2px BIRG green frame, square corners (Version 9).
+   Put the class photo-border on the Image element. */
+html body .photo-border,html body .photo-border img{border:2px solid var(--brand-primary) !important;border-radius:0 !important;box-sizing:border-box !important}
 
 /* Contact details row: pulls the two agent columns in under the photo (Version 3).
    Put the class contact-details on the Row element. Change the 720px to widen/narrow. */
