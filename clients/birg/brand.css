@@ -1,0 +1,58 @@
+/* ============================================================
+   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 1)
+   Site: homesonbowenisland.com (NSB CRM website, BIRG sub-account BvXZfZS8sKPUOtmyHiRj)
+   Loaded site-wide from the website's Head tracking code:
+     <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/birg/brand.css">
+   Look matches bowenislandrealestate.com (WordPress), so the Contact Us page
+   reads as native when it's iframed into bowenislandrealestate.com/contact.
+   Form fields are styled in the form's own Custom CSS box, not here.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;700&family=DM+Sans:wght@400;500;800&display=swap');
+
+:root{
+  --brand-primary:#435249;   /* Fir green, as used on bowenislandrealestate.com */
+  --brand-accent:#435249;
+  --brand-soft:#C1D5E5;      /* Sky */
+  --brand-text:#435249;
+  --brand-muted:#6B7A71;
+  --brand-light:#F4F7F5;
+  --brand-white:#FFFFFF;
+  --font-heading:'Bitter',Georgia,serif;
+  --font-body:'DM Sans','Helvetica Neue',Arial,sans-serif;
+  --weight-body:400;
+  --weight-heading:500;
+  --weight-sub:500;
+  --weight-label:500;
+  --weight-strong:800;
+  --weight-nav:500;
+  --icon-accent-filter:brightness(0) saturate(100%) invert(29%) sepia(10%) saturate(700%) hue-rotate(95deg);
+}
+
+/* Base type and colour */
+html body{font-family:var(--font-body) !important;color:var(--brand-text) !important;background:var(--brand-white) !important}
+html body h1,html body h2,html body h3,html body h4,
+html body .c-heading,html body .c-heading *{font-family:var(--font-heading) !important;font-weight:var(--weight-heading) !important;color:var(--brand-primary) !important}
+html body p,html body .c-paragraph,html body .c-paragraph *{font-family:var(--font-body) !important;color:var(--brand-text) !important}
+html body a:not(.c-button a){color:var(--brand-primary) !important}
+
+/* Buttons: green, square, white text; invert on hover (matches the WordPress site) */
+html body .c-button a,html body .c-button button{
+  font-family:var(--font-body) !important;font-weight:var(--weight-strong) !important;
+  background:var(--brand-primary) !important;color:var(--brand-white) !important;
+  border:2px solid var(--brand-primary) !important;border-radius:0 !important;
+  box-shadow:none !important;transition:background-color .2s ease,color .2s ease !important}
+html body .c-button a *,html body .c-button button *{color:inherit !important}
+html body .c-button a:hover,html body .c-button button:hover{background:var(--brand-white) !important;color:var(--brand-primary) !important}
+
+/* ---------- When shown inside the bowenislandrealestate.com iframe ----------
+   contact-child.js adds .nsb-in-iframe to <html>. WordPress already has its own
+   header and footer, so hide ours and drop the outer spacing. */
+html.nsb-in-iframe,html.nsb-in-iframe body{background:var(--brand-white) !important;margin:0 !important;overflow:hidden !important}
+html.nsb-in-iframe body .c-section:has(.c-nav-menu-v2),
+html.nsb-in-iframe body .site-footer,
+html.nsb-in-iframe body footer{display:none !important}
+html.nsb-in-iframe body .c-section,html.nsb-in-iframe body .c-row,html.nsb-in-iframe body .c-column{background:transparent !important;box-shadow:none !important}
+html.nsb-in-iframe body .c-section:first-of-type{padding-top:0 !important}
+html.nsb-in-iframe body .c-section:last-of-type{padding-bottom:0 !important}
+html.nsb-in-iframe::-webkit-scrollbar,html.nsb-in-iframe body::-webkit-scrollbar{display:none !important}
+html.nsb-in-iframe,html.nsb-in-iframe body{scrollbar-width:none !important}
