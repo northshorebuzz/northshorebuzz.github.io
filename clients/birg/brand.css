@@ -1,5 +1,5 @@
 /* ============================================================
-   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 10)
+   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 11)
    Site: homesonbowenisland.com (NSB CRM website, BIRG sub-account BvXZfZS8sKPUOtmyHiRj)
    Loaded site-wide from the website's Head tracking code:
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/birg/brand.css">
@@ -38,6 +38,10 @@ html body h1,html body h2,html body h3,html body h4,
 html body .c-heading,html body .c-heading *{font-family:var(--font-heading) !important;font-weight:var(--weight-heading) !important;color:var(--brand-primary) !important;line-height:1.2 !important}
 html body p,html body .c-paragraph,html body .c-paragraph *{font-family:var(--font-body) !important;font-weight:var(--weight-body) !important;font-size:17.6px !important;line-height:1.7 !important;color:var(--brand-text) !important}
 html body a:not(.c-button a){color:var(--brand-primary) !important}
+
+/* Text weight match (Version 11): the NSB CRM turns on Mac "antialiased" smoothing, which
+   draws text thinner than the WordPress site (smoothing left on auto). Put it back to auto. */
+html body,html body *{-webkit-font-smoothing:auto !important;-moz-osx-font-smoothing:auto !important}
 
 /* Buttons: green, square, white text; invert on hover (matches the WordPress site) */
 html body .c-button a,html body .c-button button{
