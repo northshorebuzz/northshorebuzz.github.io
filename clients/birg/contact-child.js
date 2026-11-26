@@ -1,8 +1,9 @@
 /*
-  BIRG Contact iframe — child side (NSB CRM site homesonbowenisland.com)  · v2
+  BIRG Contact iframe — child side (NSB CRM site homesonbowenisland.com)  · v3
   What: only acts when a page is shown inside bowenislandrealestate.com.
     1. Adds .nsb-in-iframe to <html> (brand.css hides our header/footer then).
     2. Sends the page height to WordPress so the iframe fits (no inner scrollbar).
+    4. (v3) Links and buttons open in the full window, not inside the iframe.
     3. If the iframe lands on any other page (e.g. the thank-you page after the
        form), asks WordPress to open that page in the full window so GTM fires.
   Loaded site-wide from the website's Body tracking code:
@@ -31,6 +32,19 @@
 
   // 1. Iframe mode styling hook
   document.documentElement.classList.add('nsb-in-iframe');
+
+  // 4. Links/buttons open in the full window (else e.g. a "Contact us" button
+  //    would load the BIRG site inside its own iframe)
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest && ev.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (/^(#|javascript:|mailto:|tel:)/i.test(href)) return;   // leave these alone
+    if (a.target === '_blank') return;                          // new-tab links stay as they are
+    ev.preventDefault();
+    try { window.top.location.href = a.href; }                  // allowed: user clicked
+    catch (e) { parent.postMessage({ type: 'nsb-redirect', url: a.href }, parentOrigin); }
+  }, true);
 
   // 2. Report height whenever it changes
   var last = 0;
