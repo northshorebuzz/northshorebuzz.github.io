@@ -1,5 +1,5 @@
 /* ============================================================
-   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 1)
+   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 2)
    Site: homesonbowenisland.com (NSB CRM website, BIRG sub-account BvXZfZS8sKPUOtmyHiRj)
    Loaded site-wide from the website's Head tracking code:
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/birg/brand.css">
@@ -43,6 +43,11 @@ html body .c-button a,html body .c-button button{
   box-shadow:none !important;transition:background-color .2s ease,color .2s ease !important}
 html body .c-button a *,html body .c-button button *{color:inherit !important}
 html body .c-button a:hover,html body .c-button button:hover{background:var(--brand-white) !important;color:var(--brand-primary) !important}
+
+/* Contact photo: keeps the team photo at a set size, centred (Version 2).
+   Put the class contact-photo on the Image element. Change the 560px to resize. */
+html body .contact-photo{max-width:560px !important;margin-left:auto !important;margin-right:auto !important}
+html body .contact-photo img{width:100% !important;height:auto !important}
 
 /* ---------- When shown inside the bowenislandrealestate.com iframe ----------
    contact-child.js adds .nsb-in-iframe to <html>. WordPress already has its own

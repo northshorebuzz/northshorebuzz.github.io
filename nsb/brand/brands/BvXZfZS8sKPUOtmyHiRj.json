@@ -2,7 +2,7 @@
   "client": "BIRG",
   "name": "Bowen Island Real Estate Group",
   "locationId": "BvXZfZS8sKPUOtmyHiRj",
-  "updated": "2026-11-21",
+  "updated": "2026-11-25",
   "source": "NSB CRM brand board + BIRG Google Drive (Digital logos copied into brand/assets/birg)",
   "links": [
     {
@@ -84,6 +84,18 @@
     {
       "label": "Website: SMS updates pop-up (listing pages)",
       "code": "<script src=\"https://northshorebuzz.github.io/clients/birg/sms-popup.js\" defer></script>"
+    }
+  ],
+  "classes": [
+    {
+      "name": "Images",
+      "where": "Put on the Image element.",
+      "items": [
+        {
+          "name": "contact-photo",
+          "does": "Holds the team photo at 560px wide, centred."
+        }
+      ]
     }
   ]
 }
