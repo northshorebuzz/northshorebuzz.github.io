@@ -1,5 +1,5 @@
 /* ============================================================
-   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 6)
+   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 7)
    Site: homesonbowenisland.com (NSB CRM website, BIRG sub-account BvXZfZS8sKPUOtmyHiRj)
    Loaded site-wide from the website's Head tracking code:
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/birg/brand.css">
@@ -7,7 +7,7 @@
    reads as native when it's iframed into bowenislandrealestate.com/contact.
    Form fields are styled in the form's own Custom CSS box, not here.
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;700&family=DM+Sans:wght@400;500;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@300;400;500;700&family=DM+Sans:wght@300;400;500;800&display=swap');
 
 :root{
   --brand-primary:#435249;   /* Fir green, as used on bowenislandrealestate.com */
@@ -18,9 +18,10 @@
   --brand-light:#F4F7F5;
   --brand-white:#FFFFFF;
   --font-heading:'Bitter',Georgia,serif;
-  --font-body:'DM Sans','Helvetica Neue',Arial,sans-serif;
-  --weight-body:400;
-  --weight-heading:500;
+  --font-body:'Bitter',Georgia,serif;          /* WordPress body text is Bitter 300 */
+  --font-ui:'DM Sans','Helvetica Neue',Arial,sans-serif;  /* nav, labels, buttons */
+  --weight-body:300;
+  --weight-heading:400;
   --weight-sub:500;
   --weight-label:500;
   --weight-strong:800;
@@ -28,16 +29,20 @@
   --icon-accent-filter:brightness(0) saturate(100%) invert(29%) sepia(10%) saturate(700%) hue-rotate(95deg);
 }
 
-/* Base type and colour */
-html body{font-family:var(--font-body) !important;color:var(--brand-text) !important;background:var(--brand-white) !important}
+/* Base type and colour — measured from bowenislandrealestate.com (Version 7):
+   body Bitter 300 17.6px / 1.7; H1 Bitter 400 48px / 1.2; H2 Bitter 400 40px / 1.2 */
+html body{font-family:var(--font-body) !important;font-weight:var(--weight-body) !important;color:var(--brand-text) !important;background:var(--brand-white) !important}
 html body h1,html body h2,html body h3,html body h4,
-html body .c-heading,html body .c-heading *{font-family:var(--font-heading) !important;font-weight:var(--weight-heading) !important;color:var(--brand-primary) !important}
-html body p,html body .c-paragraph,html body .c-paragraph *{font-family:var(--font-body) !important;color:var(--brand-text) !important}
+html body .c-heading,html body .c-heading *{font-family:var(--font-heading) !important;font-weight:var(--weight-heading) !important;color:var(--brand-primary) !important;line-height:1.2 !important}
+html body h1,html body h1 *{font-size:48px !important}
+html body h2,html body h2 *{font-size:40px !important}
+html body p,html body .c-paragraph,html body .c-paragraph *{font-family:var(--font-body) !important;font-weight:var(--weight-body) !important;font-size:17.6px !important;line-height:1.7 !important;color:var(--brand-text) !important}
 html body a:not(.c-button a){color:var(--brand-primary) !important}
+@media (max-width:767px){html body h1,html body h1 *{font-size:36px !important}html body h2,html body h2 *{font-size:30px !important}}
 
 /* Buttons: green, square, white text; invert on hover (matches the WordPress site) */
 html body .c-button a,html body .c-button button{
-  font-family:var(--font-body) !important;font-weight:var(--weight-strong) !important;
+  font-family:var(--font-ui) !important;font-weight:var(--weight-strong) !important;
   background:var(--brand-primary) !important;color:var(--brand-white) !important;
   border:2px solid var(--brand-primary) !important;border-radius:0 !important;
   box-shadow:none !important;transition:background-color .2s ease,color .2s ease !important}
@@ -56,7 +61,7 @@ html body .contact-details{max-width:720px !important;margin-left:auto !importan
 
 /* Form on NSB CRM pages (Version 4). On website pages the form sits in the page,
    not in its own frame, so these site rules reach it. Matches bowenislandrealestate.com. */
-html body button p,html body button p *{color:inherit !important}   /* button text stays white */
+html body button p,html body button p *{color:inherit !important;font-family:inherit !important;font-weight:inherit !important;font-size:inherit !important;line-height:1.2 !important}   /* button text stays white */
 html body #_builder-form .form-control.form-control[class][class]{
   border:1px solid var(--brand-primary) !important;border-radius:3px !important;
   padding:12px !important;font-family:'Bitter',serif !important;font-size:17.6px !important;
@@ -64,7 +69,7 @@ html body #_builder-form .form-control.form-control[class][class]{
 html body #_builder-form .form-control.form-control[class][class]::placeholder{color:var(--brand-primary) !important;opacity:.6 !important}
 html body #_builder-form .form-control.form-control[class][class]:focus{outline:none !important;box-shadow:0 0 0 2px rgba(67,82,73,.25) !important}
 html body #_builder-form button.button-element{
-  font-family:var(--font-body) !important;font-weight:800 !important;font-size:17.6px !important;
+  font-family:var(--font-ui) !important;font-weight:800 !important;font-size:17.6px !important;
   background:var(--brand-primary) !important;color:var(--brand-white) !important;
   border:2px solid var(--brand-primary) !important;border-radius:0 !important;
   padding:18px 48px !important;min-width:200px !important;height:auto !important;box-shadow:none !important;
