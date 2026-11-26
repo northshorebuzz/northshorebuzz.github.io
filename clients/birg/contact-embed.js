@@ -1,5 +1,5 @@
 /*
-  BIRG page iframes — parent side (WordPress)  · v3
+  BIRG page iframes — parent side (WordPress)  · v4
   What: builds the white wrapper + NSB CRM page iframe inside each .birg-embed,
         resizes it to its content (no inner scrollbar), and follows the thank-you
         redirect in the top window so GTM fires.
@@ -10,6 +10,7 @@
     <script src="https://northshorebuzz.github.io/clients/birg/contact-embed.js" defer></script>
   The Contact page's older <div id="birg-contact"></div> still works (= contact-us).
   v3: one script for any page (Contact, About Us, ...).
+  v4: never follows a redirect to a page that is itself embedded (guards against an old cached child script).
   Pairs with: clients/birg/contact-child.js (on the NSB CRM site)
 */
 (function () {
@@ -67,6 +68,11 @@
     }
 
     if (e.data.type === 'nsb-redirect' && typeof e.data.url === 'string') {
+      // Ignore redirects to pages that are meant to stay in an iframe
+      try {
+        var path = new URL(e.data.url).pathname.replace(/^\/+|\/+$/g, '');
+        if (path === 'contact-us' || document.querySelector('.birg-embed[data-page="' + path + '"]')) return;
+      } catch (err) { return; }
       // Only follow https links on BIRG's own sites
       if (/^https:\/\/(www\.)?(bowenislandrealestate\.com|homesonbowenisland\.com)\//.test(e.data.url)) {
         window.location.href = e.data.url;
