@@ -96,6 +96,16 @@
           "does": "Holds the team photo at 560px wide, centred."
         }
       ]
+    },
+    {
+      "name": "Rows",
+      "where": "Put on the Row element.",
+      "items": [
+        {
+          "name": "contact-details",
+          "does": "Holds the row at 720px wide, centred, so its columns sit closer together."
+        }
+      ]
     }
   ]
 }
