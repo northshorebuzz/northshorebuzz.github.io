@@ -110,6 +110,16 @@
           "does": "Holds the row at 720px wide, centred, so its columns sit closer together."
         }
       ]
+    },
+    {
+      "name": "Sections",
+      "where": "Put on a Section or Row.",
+      "items": [
+        {
+          "name": "accent-dash",
+          "does": "Short green dash (64 x 4px) centred above it, like the WordPress page headers."
+        }
+      ]
     }
   ]
 }
