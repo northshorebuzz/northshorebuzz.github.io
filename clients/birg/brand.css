@@ -1,5 +1,5 @@
 /* ============================================================
-   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 3)
+   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 4)
    Site: homesonbowenisland.com (NSB CRM website, BIRG sub-account BvXZfZS8sKPUOtmyHiRj)
    Loaded site-wide from the website's Head tracking code:
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/birg/brand.css">
@@ -52,6 +52,23 @@ html body .contact-photo img{width:100% !important;height:auto !important}
 /* Contact details row: pulls the two agent columns in under the photo (Version 3).
    Put the class contact-details on the Row element. Change the 720px to widen/narrow. */
 html body .contact-details{max-width:720px !important;margin-left:auto !important;margin-right:auto !important}
+
+/* Form on NSB CRM pages (Version 4). On website pages the form sits in the page,
+   not in its own frame, so these site rules reach it. Matches bowenislandrealestate.com. */
+html body button p,html body button p *{color:inherit !important}   /* button text stays white */
+html body #_builder-form .form-control.form-control[class][class]{
+  border:1px solid var(--brand-primary) !important;border-radius:3px !important;
+  padding:12px !important;font-family:'Bitter',serif !important;font-size:17.6px !important;
+  color:var(--brand-primary) !important;background:var(--brand-white) !important;box-shadow:none !important}
+html body #_builder-form .form-control.form-control[class][class]::placeholder{color:var(--brand-primary) !important;opacity:.6 !important}
+html body #_builder-form .form-control.form-control[class][class]:focus{outline:none !important;box-shadow:0 0 0 2px rgba(67,82,73,.25) !important}
+html body #_builder-form button.button-element{
+  font-family:var(--font-body) !important;font-weight:800 !important;font-size:17.6px !important;
+  background:var(--brand-primary) !important;color:var(--brand-white) !important;
+  border:2px solid var(--brand-primary) !important;border-radius:0 !important;
+  padding:18px 48px !important;min-width:200px !important;height:auto !important;box-shadow:none !important;
+  transition:background-color .2s ease,color .2s ease !important}
+html body #_builder-form button.button-element:hover{background:var(--brand-white) !important;color:var(--brand-primary) !important}
 
 /* ---------- When shown inside the bowenislandrealestate.com iframe ----------
    contact-child.js adds .nsb-in-iframe to <html>. WordPress already has its own
