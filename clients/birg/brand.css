@@ -1,5 +1,5 @@
 /* ============================================================
-   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 7)
+   BIRG (Bowen Island Real Estate Group) — BRAND CSS (Version 8)
    Site: homesonbowenisland.com (NSB CRM website, BIRG sub-account BvXZfZS8sKPUOtmyHiRj)
    Loaded site-wide from the website's Head tracking code:
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/birg/brand.css">
@@ -30,15 +30,14 @@
 }
 
 /* Base type and colour — measured from bowenislandrealestate.com (Version 7):
-   body Bitter 300 17.6px / 1.7; H1 Bitter 400 48px / 1.2; H2 Bitter 400 40px / 1.2 */
+   body Bitter 300 17.6px / 1.7; headings Bitter 400.
+   v8: heading SIZES are set in the builder (WordPress page title 48px, names 40px), not forced here,
+   because NSB CRM pages use heading tags for phone/email lines too. */
 html body{font-family:var(--font-body) !important;font-weight:var(--weight-body) !important;color:var(--brand-text) !important;background:var(--brand-white) !important}
 html body h1,html body h2,html body h3,html body h4,
 html body .c-heading,html body .c-heading *{font-family:var(--font-heading) !important;font-weight:var(--weight-heading) !important;color:var(--brand-primary) !important;line-height:1.2 !important}
-html body h1,html body h1 *{font-size:48px !important}
-html body h2,html body h2 *{font-size:40px !important}
 html body p,html body .c-paragraph,html body .c-paragraph *{font-family:var(--font-body) !important;font-weight:var(--weight-body) !important;font-size:17.6px !important;line-height:1.7 !important;color:var(--brand-text) !important}
 html body a:not(.c-button a){color:var(--brand-primary) !important}
-@media (max-width:767px){html body h1,html body h1 *{font-size:36px !important}html body h2,html body h2 *{font-size:30px !important}}
 
 /* Buttons: green, square, white text; invert on hover (matches the WordPress site) */
 html body .c-button a,html body .c-button button{
@@ -61,7 +60,7 @@ html body .contact-details{max-width:720px !important;margin-left:auto !importan
 
 /* Form on NSB CRM pages (Version 4). On website pages the form sits in the page,
    not in its own frame, so these site rules reach it. Matches bowenislandrealestate.com. */
-html body button p,html body button p *{color:inherit !important;font-family:inherit !important;font-weight:inherit !important;font-size:inherit !important;line-height:1.2 !important}   /* button text stays white */
+html body button p,html body button p *{color:inherit !important;font-family:var(--font-ui) !important;font-weight:inherit !important;font-size:inherit !important;line-height:1.2 !important}   /* button text stays white */
 html body #_builder-form .form-control.form-control[class][class]{
   border:1px solid var(--brand-primary) !important;border-radius:3px !important;
   padding:12px !important;font-family:'Bitter',serif !important;font-size:17.6px !important;
