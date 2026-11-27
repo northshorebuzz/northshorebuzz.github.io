@@ -1,5 +1,5 @@
 /* ============================================================
-   TANSY SVERRE HOMES — BRAND CSS (Version 37)
+   TANSY SVERRE HOMES — BRAND CSS (Version 38)
    Loaded site-wide from the Head tracking code (load BEFORE master.css):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/brand.css">
    Claude edits this file and pushes. GitHub Pages updates in ~1–10 min.
@@ -36,3 +36,9 @@ html body:has(.listing-bar) .c-section:not(:has(.c-nav-menu-v2)):has(~ .c-sectio
    are just off-white (#FCFDFD), so the page steps grey -> off-white -> beige */
 html body:has(.listing-bar) .spec-grid ~ .c-section:not(.spec-grid):not(:has(.c-nav-menu-v2)):not(.listing-bar):not(.section-primary):has(~ .c-section:is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"]))){background-color:var(--tansy-light-grey) !important}
 html body:has(.listing-bar) .c-section:has(.spec-grid) ~ .c-section:not(:has(.spec-grid)):not(:has(.c-nav-menu-v2)):not(.listing-bar):not(.section-primary):has(~ .c-section:is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"]))){background-color:var(--tansy-light-grey) !important}
+/* Version 38: Property Summary in Deep Teal with white text. Put section-primary on the section
+   (alongside spec-grid if it has it). Overrides spec-grid's teal text so it reads on teal. */
+html body .section-primary.section-primary{background-color:var(--brand-primary) !important;background-image:none !important}
+html body .section-primary :is(.bg,.c-row,.c-column){background-color:transparent !important}
+html body .section-primary :is(h1,h2,h3,h4,h5,h6,p,li,span,strong),html body .section-primary.spec-grid .c-column:has(.c-paragraph) :is(p,h3),html body .section-primary .spec-grid .c-column:has(.c-paragraph) :is(p,h3){color:var(--brand-white) !important}
+html body .section-primary.spec-grid .c-column:has(.c-paragraph),html body .section-primary .spec-grid .c-column:has(.c-paragraph){border-left-color:color-mix(in srgb,var(--brand-white) 25%,transparent) !important}
