@@ -1,5 +1,5 @@
 /* ============================================================
-   TANSY SVERRE HOMES — BRAND CSS (Version 36)
+   TANSY SVERRE HOMES — BRAND CSS (Version 37)
    Loaded site-wide from the Head tracking code (load BEFORE master.css):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/brand.css">
    Claude edits this file and pushes. GitHub Pages updates in ~1–10 min.
@@ -28,9 +28,11 @@ html body .section-link-in-bio-stack .c-button a,html body .section-link-in-bio-
 /* Property pages: two-tone (Version 35). Only fires on pages with a listing-bar AND a photo gallery/slider,
    so it never touches the Home page. Sections above the gallery = The Grey (#F2F6F6);
    the gallery section itself = Driftwood beige (#E4D8C4). Header and teal listing-bar skipped. */
-html body{--tansy-grey:#F2F6F6;--tansy-light-grey:#FAFBFB;--tansy-driftwood:#E4D8C4}
+html body{--tansy-grey:#F2F6F6;--tansy-light-grey:#FCFDFD;--tansy-driftwood:#E4D8C4}
 html body:has(.listing-bar) .c-section:not(:has(.c-nav-menu-v2)):not(.listing-bar):not(.section-primary):has(~ .c-section:is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"]))){background-color:var(--tansy-grey) !important;background-image:none !important}
 html body:has(.listing-bar) .c-section:not(:has(.c-nav-menu-v2)):not(:has(.lc-card)):is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"])){background-color:var(--tansy-driftwood) !important;background-image:none !important}
 html body:has(.listing-bar) .c-section:not(:has(.c-nav-menu-v2)):has(~ .c-section:is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"]))) :is(.bg,.c-row,.c-column),html body:has(.listing-bar) .c-section:not(:has(.c-nav-menu-v2)):is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"])) :is(.bg,.c-row,.c-column){background-color:transparent !important}
-/* Version 36: above the gallery, sections alternate the grey and light grey (#FAFBFB) */
-html body:has(.listing-bar) .c-section:not(:has(.c-nav-menu-v2)):not(.listing-bar):not(.section-primary):has(~ .c-section:is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"]))):nth-of-type(even){background-color:var(--tansy-light-grey) !important}
+/* Version 37: sections between Property Summary (spec-grid) and the gallery, e.g. About this home,
+   are just off-white (#FCFDFD), so the page steps grey -> off-white -> beige */
+html body:has(.listing-bar) .spec-grid ~ .c-section:not(.spec-grid):not(:has(.c-nav-menu-v2)):not(.listing-bar):not(.section-primary):has(~ .c-section:is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"]))){background-color:var(--tansy-light-grey) !important}
+html body:has(.listing-bar) .c-section:has(.spec-grid) ~ .c-section:not(:has(.spec-grid)):not(:has(.c-nav-menu-v2)):not(.listing-bar):not(.section-primary):has(~ .c-section:is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"]))){background-color:var(--tansy-light-grey) !important}
