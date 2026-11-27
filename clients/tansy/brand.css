@@ -1,5 +1,5 @@
 /* ============================================================
-   TANSY SVERRE HOMES — BRAND CSS (Version 44)
+   TANSY SVERRE HOMES — BRAND CSS (Version 45)
    Loaded site-wide from the Head tracking code (load BEFORE master.css):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/brand.css">
    Claude edits this file and pushes. GitHub Pages updates in ~1–10 min.
@@ -54,3 +54,6 @@ html body:has(.house-hero) .c-paragraph:has(p + p) :is(p,p *){font-size:18px !im
 html body:has(.house-hero) .c-section:not(:has(.c-nav-menu-v2)):not(.spec-grid):not(.site-footer) .c-paragraph:not(:has(p + p)) :is(p,p *){font-size:14px !important}
 html body:has(.house-hero) .spec-grid.spec-grid .c-column:has(.c-paragraph) p{font-size:13px !important}
 html body:has(.house-hero) .spec-grid.spec-grid .c-column:has(.c-paragraph) :is(h3,h3 *){font-size:26px !important}
+/* Version 45: mobile/tablet header shows the full white TANSY SVERRE wordmark (same as desktop),
+   not the icon-only logo, on the Deep Teal bar */
+@media (max-width:1024px){html body .c-section:has(.c-nav-menu-v2) img{content:url(https://assets.cdn.filesafe.space/gjbfEVD4yOjW0MzRQBif/media/6ac800dd0762cee30169272d.png) !important;height:48px !important;width:auto !important;max-width:none !important;object-fit:contain !important}}
