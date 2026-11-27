@@ -1,5 +1,5 @@
 /* ============================================================
-   TANSY SVERRE HOMES — BRAND CSS (Version 45)
+   TANSY SVERRE HOMES — BRAND CSS (Version 46)
    Loaded site-wide from the Head tracking code (load BEFORE master.css):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/brand.css">
    Claude edits this file and pushes. GitHub Pages updates in ~1–10 min.
@@ -57,3 +57,13 @@ html body:has(.house-hero) .spec-grid.spec-grid .c-column:has(.c-paragraph) :is(
 /* Version 45: mobile/tablet header shows the full white TANSY SVERRE wordmark (same as desktop),
    not the icon-only logo, on the Deep Teal bar */
 @media (max-width:1024px){html body .c-section:has(.c-nav-menu-v2) img{content:url(https://assets.cdn.filesafe.space/gjbfEVD4yOjW0MzRQBif/media/6ac800dd0762cee30169272d.png) !important;height:48px !important;width:auto !important;max-width:none !important;object-fit:contain !important}}
+/* Version 46: hero fade classes, the same slow eased fade as the Home hero. Put ONE on a page's hero section:
+     hero-fade        fades into Deep Teal (#00374B)
+     hero-fade-night  fades into Night Teal (#012A38, the Home page colour)
+     hero-fade-grey   fades into The Grey (#F2F6F6) */
+html body .c-section:is(.hero-fade,.hero-fade-night,.hero-fade-grey){position:relative}
+html body .c-section:is(.hero-fade,.hero-fade-night,.hero-fade-grey)::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:60%;pointer-events:none;z-index:1}
+html body .c-section:is(.hero-fade,.hero-fade-night,.hero-fade-grey) > .inner{position:relative;z-index:2}
+html body .c-section.hero-fade::after{background:linear-gradient(to bottom,#00374B00 0%,#00374B0a 12%,#00374B1f 24%,#00374B3d 36%,#00374B63 48%,#00374B8c 60%,#00374Bb3 71%,#00374Bd4 81%,#00374Bed 90%,#00374B 100%)}
+html body .c-section.hero-fade-night::after{background:linear-gradient(to bottom,#012A3800 0%,#012A380a 12%,#012A381f 24%,#012A383d 36%,#012A3863 48%,#012A388c 60%,#012A38b3 71%,#012A38d4 81%,#012A38ed 90%,#012A38 100%)}
+html body .c-section.hero-fade-grey::after{background:linear-gradient(to bottom,#F2F6F600 0%,#F2F6F60a 12%,#F2F6F61f 24%,#F2F6F63d 36%,#F2F6F663 48%,#F2F6F68c 60%,#F2F6F6b3 71%,#F2F6F6d4 81%,#F2F6F6ed 90%,#F2F6F6 100%)}
