@@ -1,4 +1,4 @@
-/* Tansy - Home Variation 3 (sunset hero trial) - Version 2
+/* Tansy - Home Variation 3 (sunset hero trial) - Version 3
    Loaded ONLY on the Home - Variation 3 page (/home-variation-3), from that page's Header Tracking,
    on the line AFTER dark.css:
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/home-variation-3.css">
@@ -33,4 +33,4 @@ html body .section-m7ngsmrDQm p,html body .section-m7ngsmrDQm p *,html body .sec
 html body .section-m7ngsmrDQm h5,html body .section-m7ngsmrDQm h5 *,html body .section-m7ngsmrDQm h6,html body .section-m7ngsmrDQm h6 *,html body .section-m7ngsmrDQm .eyebrow,html body .section-m7ngsmrDQm .eyebrow *{color:var(--brand-muted) !important}
 html body .section-m7ngsmrDQm .c-button a,html body .section-m7ngsmrDQm .c-button button{border-color:var(--brand-primary) !important;color:var(--brand-primary) !important}
 html body .section-m7ngsmrDQm .c-button a:hover,html body .section-m7ngsmrDQm .c-button button:hover{background-color:var(--brand-primary) !important;color:var(--brand-accent) !important}
-html body .c-section:not(.section-7-2KnP9Do7) img[src*="6ac7a4a589da6e6f9bb32fa0"]{filter:brightness(0) invert(1) !important}
+html body .c-section img[src*="6ac7a4a589da6e6f9bb32fa0"]{filter:brightness(0) invert(1) !important}
