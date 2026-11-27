@@ -1,4 +1,4 @@
-/* Tansy - Home Variation 3 (sunset hero trial) - Version 1
+/* Tansy - Home Variation 3 (sunset hero trial) - Version 2
    Loaded ONLY on the Home - Variation 3 page (/home-variation-3), from that page's Header Tracking,
    on the line AFTER dark.css:
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/home-variation-3.css">
@@ -24,8 +24,8 @@ html body .c-section.section-m4_SXXsRXW.section-m4_SXXsRXW{border-top:0 !importa
 @media (min-width:1025px){html body .section-m4_SXXsRXW > .inner{max-width:1290px !important}
 html body .section-m4_SXXsRXW .col-8uARzjPZczc{flex:0 0 574px !important;width:574px !important}
 html body .section-m4_SXXsRXW .col-ac_03IEF2wj{flex:1 1 auto !important;width:auto !important}}
-html body .c-section.section-7-2KnP9Do7.section-7-2KnP9Do7.section-7-2KnP9Do7.section-7-2KnP9Do7 .c-button a,html body .c-section.section-7-2KnP9Do7.section-7-2KnP9Do7.section-7-2KnP9Do7.section-7-2KnP9Do7 .c-button button{border-color:var(--brand-primary) !important;color:var(--brand-primary) !important}
-html body .c-section.section-7-2KnP9Do7.section-7-2KnP9Do7.section-7-2KnP9Do7.section-7-2KnP9Do7 .c-button a:hover,html body .c-section.section-7-2KnP9Do7.section-7-2KnP9Do7.section-7-2KnP9Do7.section-7-2KnP9Do7 .c-button button:hover{background-color:var(--brand-primary) !important;color:var(--brand-accent) !important}
+html body .c-section.section-7-2KnP9Do7.section-7-2KnP9Do7.section-7-2KnP9Do7{background-color:var(--dark-band) !important;border-top:1px solid var(--dark-line)}
+html body .section-7-2KnP9Do7 .bg,html body .section-7-2KnP9Do7 .c-row,html body .section-7-2KnP9Do7 .c-column{background-color:transparent !important}
 html body .c-section.c-wrapper.section-m7ngsmrDQm.section-m7ngsmrDQm:not(:has(.c-nav-menu-v2)):nth-of-type(n){background-color:var(--driftwood) !important;border-top:0 !important}
 html body .section-m7ngsmrDQm .bg,html body .section-m7ngsmrDQm .c-row,html body .section-m7ngsmrDQm .c-column{background-color:transparent !important}
 html body .section-m7ngsmrDQm h1,html body .section-m7ngsmrDQm h1 *,html body .section-m7ngsmrDQm h2,html body .section-m7ngsmrDQm h2 *,html body .section-m7ngsmrDQm h3,html body .section-m7ngsmrDQm h3 *,html body .section-m7ngsmrDQm h4,html body .section-m7ngsmrDQm h4 *{color:var(--brand-primary) !important}
