@@ -1,5 +1,5 @@
 /* ============================================================
-   TANSY SVERRE HOMES — BRAND CSS (Version 43)
+   TANSY SVERRE HOMES — BRAND CSS (Version 44)
    Loaded site-wide from the Head tracking code (load BEFORE master.css):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/brand.css">
    Claude edits this file and pushes. GitHub Pages updates in ~1–10 min.
@@ -47,3 +47,10 @@ html body :is(.section-grey,.section-gray,.section-light-grey,.section-light-gra
    and the thin column dividers are faint white */
 html body .spec-grid.spec-grid :is(h1,h2,h3,h4,h5,h6,p,li,span,strong,a),html body .spec-grid.spec-grid .c-column:has(.c-paragraph) :is(p,h3,p *,h3 *){color:var(--brand-white) !important}
 html body .spec-grid.spec-grid .c-column:has(.c-paragraph){border-left-color:color-mix(in srgb,var(--brand-white) 25%,transparent) !important}
+/* Version 44: bigger text on property pages (pages with the house-hero section only).
+   Multi-paragraph text blocks (About This Home) 18px; one-line labels (BEDROOMS, BATHROOMS...) 14px;
+   Property Summary labels 13px, values 26px */
+html body:has(.house-hero) .c-paragraph:has(p + p) :is(p,p *){font-size:18px !important;line-height:1.75 !important}
+html body:has(.house-hero) .c-section:not(:has(.c-nav-menu-v2)):not(.spec-grid):not(.site-footer) .c-paragraph:not(:has(p + p)) :is(p,p *){font-size:14px !important}
+html body:has(.house-hero) .spec-grid.spec-grid .c-column:has(.c-paragraph) p{font-size:13px !important}
+html body:has(.house-hero) .spec-grid.spec-grid .c-column:has(.c-paragraph) :is(h3,h3 *){font-size:26px !important}
