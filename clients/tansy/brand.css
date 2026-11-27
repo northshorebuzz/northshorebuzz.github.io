@@ -1,5 +1,5 @@
 /* ============================================================
-   TANSY SVERRE HOMES — BRAND CSS (Version 34)
+   TANSY SVERRE HOMES — BRAND CSS (Version 35)
    Loaded site-wide from the Head tracking code (load BEFORE master.css):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/brand.css">
    Claude edits this file and pushes. GitHub Pages updates in ~1–10 min.
@@ -24,3 +24,11 @@ html body .section-link-in-bio-stack .c-button a *,html body .section-link-in-bi
 html body .section-link-in-bio-stack .c-button a:hover,html body .section-link-in-bio-stack .c-button button:hover{background:#D9943B !important;color:#012A38 !important}
 html body .section-link-in-bio-stack .c-image img.img-circle{content:url(https://images.leadconnectorhq.com/image/f_webp/q_80/r_400/u_https://assets.cdn.filesafe.space/gjbfEVD4yOjW0MzRQBif/media/6af102d03f4edcbb004e6f8e.png) !important;object-fit:cover !important;object-position:center 18% !important;border:2px solid #D9943B !important;width:132px !important;height:132px !important;max-width:none !important;aspect-ratio:1/1 !important;border-radius:50% !important}
 html body .section-link-in-bio-stack .c-button a,html body .section-link-in-bio-stack .c-button button{display:block !important;width:min(340px,86vw) !important;margin-left:auto !important;margin-right:auto !important;box-sizing:border-box !important}
+
+/* Property pages: two-tone (Version 35). Only fires on pages with a photo gallery/slider,
+   so it never touches the Home page. Sections above the gallery = The Grey (#F2F6F6);
+   the gallery section itself = Driftwood beige (#E4D8C4). Header and teal listing-bar skipped. */
+html body{--tansy-grey:#F2F6F6;--tansy-driftwood:#E4D8C4}
+html body .c-section:not(:has(.c-nav-menu-v2)):not(.listing-bar):not(.section-primary):has(~ .c-section:is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"]))){background-color:var(--tansy-grey) !important;background-image:none !important}
+html body .c-section:not(:has(.c-nav-menu-v2)):not(:has(.lc-card)):is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"])){background-color:var(--tansy-driftwood) !important;background-image:none !important}
+html body .c-section:not(:has(.c-nav-menu-v2)):has(~ .c-section:is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"]))) :is(.bg,.c-row,.c-column),html body .c-section:not(:has(.c-nav-menu-v2)):is(:has([data-lg]),:has([class*="image-slider"]),:has([class*="slider"])) :is(.bg,.c-row,.c-column){background-color:transparent !important}
