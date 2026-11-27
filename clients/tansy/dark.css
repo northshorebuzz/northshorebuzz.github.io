@@ -1,7 +1,7 @@
 /* Loaded on the Home page only (that page's own Head code):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/dark.css">
 */
-/* Tansy Dark CSS Version 24 - loads on Home Variation 2 only */
+/* Tansy Dark CSS Version 25 - loads on Home Variation 2 only */
 :root{--dark-night:#012A38;--dark-band:#00374B;--dark-lift:#0B4A5F;--dark-line:rgba(135,182,190,.25);--driftwood:#E4D8C4;--soft-grey:#F2F6F6}
 html,html body{background-color:var(--dark-night) !important}
 /* Section backgrounds. Skips the "Testimonials REMax" section (section-5hmbjKMMEf) so its
@@ -29,8 +29,8 @@ html body .section-43kyctKwp1 .c-image{position:relative;z-index:3}
 /* Tansy rising into the mist: the section has a -200px top margin (set in the builder), so it
    overlaps the hero. See-through background + sits above the hero fade so she and the text show. */
 html body .c-section.section-ZShLp81IPk.section-ZShLp81IPk{border-top:0 !important;background-color:transparent !important;position:relative;z-index:2}
-/* Phones: no overlap, so her head can't land on the logo */
-@media (max-width:767px){html body .c-section.section-ZShLp81IPk.section-ZShLp81IPk{margin-top:0 !important}}
+/* Phones: small overlap (-90px, Version 25) so her head sits closer to the logo without touching it */
+@media (max-width:767px){html body .c-section.section-ZShLp81IPk.section-ZShLp81IPk{margin-top:-90px !important}}
 /* Wider text column (desktop): row widened 1170 -> 1290px, photo column stays 574px,
    the text column takes the extra width so its lines run longer and it sits shorter */
 @media (min-width:1025px){html body .section-ZShLp81IPk > .inner{max-width:1290px !important}html body .section-ZShLp81IPk .col-IsMvDtLVxd7{flex:0 0 574px !important;width:574px !important}html body .section-ZShLp81IPk .col-hG095yjYaVJ{flex:1 1 auto !important;width:auto !important}}
