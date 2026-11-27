@@ -1,7 +1,7 @@
 /* Loaded on the Home page only (that page's own Head code):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/dark.css">
 */
-/* Tansy Dark CSS Version 22 - loads on Home Variation 2 only */
+/* Tansy Dark CSS Version 23 - loads on Home Variation 2 only */
 :root{--dark-night:#012A38;--dark-band:#00374B;--dark-lift:#0B4A5F;--dark-line:rgba(135,182,190,.25);--driftwood:#E4D8C4}
 html,html body{background-color:var(--dark-night) !important}
 /* Section backgrounds. Skips the "Testimonials REMax" section (section-5hmbjKMMEf) so its
@@ -61,7 +61,9 @@ html body .gold-frame{position:relative}html body .gold-frame img{position:relat
 html body .gold-frame::before{content:"";position:absolute;inset:16px -16px -16px 16px;border:1px solid var(--brand-accent);z-index:0;pointer-events:none}
 html body .hero-fade{position:relative}
 html body .hero-fade::after{content:"";position:absolute;left:0;right:0;bottom:0;height:140px;background:linear-gradient(to bottom,transparent,var(--dark-night));pointer-events:none}
-/* RE/MAX logo flipped white on every dark section, incl. Testimonials REMax (Version 22) */
-html body .c-section img[src*="6ac7a4a589da6e6f9bb32fa0"]{filter:brightness(0) invert(1) !important}
+/* RE/MAX logo flipped white on dark sections */
+html body .c-section:not(.section-5hmbjKMMEf) img[src*="6ac7a4a589da6e6f9bb32fa0"]{filter:brightness(0) invert(1) !important}
+/* Testimonials REMax: white-text logo with the balloon kept in colour (Version 23) */
+html body .section-5hmbjKMMEf img[src*="6ac7a4a589da6e6f9bb32fa0"]{content:url(https://northshorebuzz.github.io/clients/tansy/remax-elevate-white.png) !important;filter:none !important}
 html body ul li::marker{color:var(--brand-accent) !important}
 ::selection{background:var(--brand-accent);color:var(--brand-primary)}
