@@ -1,5 +1,5 @@
 /* ============================================================
-   TANSY SVERRE HOMES — BRAND CSS (Version 40)
+   TANSY SVERRE HOMES — BRAND CSS (Version 41)
    Loaded site-wide from the Head tracking code (load BEFORE master.css):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/brand.css">
    Claude edits this file and pushes. GitHub Pages updates in ~1–10 min.
@@ -43,3 +43,7 @@ html body .c-section:is(.section-grey,.section-gray).c-section{background-color:
 html body .c-section:is(.section-light-grey,.section-light-gray,.\32 222-image-slider).c-section{background-color:var(--tansy-light-grey) !important;background-image:none !important}
 html body .c-section.section-beige.c-section{background-color:var(--tansy-driftwood) !important;background-image:none !important}
 html body :is(.section-grey,.section-gray,.section-light-grey,.section-light-gray,.section-beige,.\32 222-image-slider) :is(.bg,.c-row,.c-column){background-color:transparent !important}
+/* Version 41: Property Summary (spec-grid) sits on a teal background, so all its text is white
+   and the thin column dividers are faint white */
+html body .spec-grid.spec-grid :is(h1,h2,h3,h4,h5,h6,p,li,span,strong,a),html body .spec-grid.spec-grid .c-column:has(.c-paragraph) :is(p,h3,p *,h3 *){color:var(--brand-white) !important}
+html body .spec-grid.spec-grid .c-column:has(.c-paragraph){border-left-color:color-mix(in srgb,var(--brand-white) 25%,transparent) !important}
