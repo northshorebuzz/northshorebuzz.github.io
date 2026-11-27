@@ -1,5 +1,5 @@
 /* ============================================================
-   TANSY SVERRE HOMES — BRAND CSS (Version 41)
+   TANSY SVERRE HOMES — BRAND CSS (Version 42)
    Loaded site-wide from the Head tracking code (load BEFORE master.css):
      <link rel="stylesheet" href="https://northshorebuzz.github.io/clients/tansy/brand.css">
    Claude edits this file and pushes. GitHub Pages updates in ~1–10 min.
@@ -34,11 +34,11 @@ html body :is(.section-primary,.section-teal).spec-grid .c-column:has(.c-paragra
 /* Version 39: section colour classes - put ONE on a section in the builder (next to any class it
    already has, space between). Replaces the v35-37 guesswork rules.
      section-teal / section-primary  = Deep Teal, white text (rules above)
-     section-grey  (or section-gray)  = The Grey #F2F6F6
+     section-grey  (or section-gray)  = Grey #DCE4E6 (darker, Version 42)
      section-light-grey (or -gray)    = Light Grey #FCFDFD
      section-beige                    = Driftwood #E4D8C4
    The gallery section (class 2222-image-slider) is Light Grey automatically. */
-html body{--tansy-grey:#F2F6F6;--tansy-light-grey:#FCFDFD;--tansy-driftwood:#E4D8C4}
+html body{--tansy-grey:#DCE4E6;--tansy-light-grey:#FCFDFD;--tansy-driftwood:#E4D8C4}
 html body .c-section:is(.section-grey,.section-gray).c-section{background-color:var(--tansy-grey) !important;background-image:none !important}
 html body .c-section:is(.section-light-grey,.section-light-gray,.\32 222-image-slider).c-section{background-color:var(--tansy-light-grey) !important;background-image:none !important}
 html body .c-section.section-beige.c-section{background-color:var(--tansy-driftwood) !important;background-image:none !important}
