@@ -546,6 +546,17 @@
           try { draw(spot, e.data.menu); } catch (err) { console.error('[MOSO menu preview]', err); }
         }
       });
+      /* Tell the editor how tall the menu is (grows when a dropdown opens) */
+      var lastH = 0;
+      var sendH = function(){
+        var nav = document.getElementById('mosoNav'); if (!nav) return;
+        var b = nav.getBoundingClientRect().bottom;
+        Array.prototype.forEach.call(nav.querySelectorAll('.moso-panel.is-open'), function(p){ b = Math.max(b, p.getBoundingClientRect().bottom); });
+        var hgt = Math.ceil(b + 8);
+        if (hgt !== lastH) { lastH = hgt; window.parent.postMessage({ type: 'moso-menu-height', h: hgt }, '*'); }
+      };
+      new MutationObserver(function(){ setTimeout(sendH, 0); }).observe(spot, { attributes: true, subtree: true, childList: true, attributeFilter: ['class'] });
+      window.addEventListener('load', sendH);
       if (window.parent !== window) window.parent.postMessage({ type: 'moso-menu-ready' }, '*');
       return;
     }

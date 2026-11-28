@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ============================================================
-     NSB MENU EDITOR (Version 2) — one page, no build step
+     NSB MENU EDITOR (Version 3) — one page, no build step
      Served by the nsb-menu-editor Cloudflare Worker at
        https://nsb-menu-editor.buzz-026.workers.dev/<site>/editor
      The Worker fills in window.NSB_MENU (site, api, key) as it serves
@@ -14,6 +14,10 @@
      on every edit. Desktop / Phone switch.
      Top menu laid out left to right like the real nav bar (click an
      item to edit it, arrows move it); dropdown columns side by side.
+     V3 (Nov 28, 2026): one column. Preview, then Top menu right under
+     it. Header bits (logo, phone, tagline) folded away at the bottom.
+     "Who" is a small picker in the top bar; the change list and note
+     live in the Publish check.
      ============================================================ -->
 <html lang="en">
 <head>
@@ -29,7 +33,13 @@
   body { margin:0; font-family: Montserrat, system-ui, sans-serif; color:#000; background:#fff; font-size:14px; }
   button, input, textarea, select { font: inherit; }
   .top { position: sticky; top:0; z-index:20; background:#fff; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:12px; padding:12px 20px; }
-  .top h1 { font-size:18px; margin:0; font-weight:700; flex:1; }
+  .top h1 { font-size:18px; margin:0; font-weight:700; }
+  #whoSpot { flex:1; }
+  #whoSpot select { width:auto; padding:5px 8px; font-size:13px; border-radius:8px; border:1px solid #d6d6d6; margin-left:8px; }
+  .wrap1 { padding:16px 20px 40px; max-width:1200px; }
+  details.hdr > summary { font-size:14px; font-weight:700; color:#000; padding:12px 16px; border:1px solid var(--line); border-radius:12px; list-style:none; }
+  details.hdr[open] > summary { border-radius:12px 12px 0 0; border-bottom:none; }
+  details.hdr > .card { border-radius:0 0 12px 12px; margin-bottom:16px; }
   .meta { color:var(--mute); font-size:12px; padding:8px 20px 0; }
   .btn { border:1px solid var(--line); background:#fff; border-radius:8px; padding:8px 14px; cursor:pointer; font-weight:600; }
   .btn:hover { border-color:#bbb; }
@@ -115,6 +125,7 @@
 <body>
 <div class="top">
   <h1>Menu Editor</h1>
+  <span id="whoSpot"></span>
   <button class="btn text" id="undo" type="button">Undo all</button>
   <button class="btn primary" id="publish" type="button" disabled>Publish</button>
 </div>
@@ -134,7 +145,7 @@
 (function(){
   var CFG = window.NSB_MENU || {};
   var API = CFG.api || '';
-  var orig = null, cur = null, sha = null, editors = [], open = new WeakSet(), sel = null, publishing = false;
+  var orig = null, cur = null, sha = null, editors = [], open = new WeakSet(), sel = null, hdrOpen = false, publishing = false;
   var LS = 'nsbMenuWho:' + (CFG.site || '');
 
   var $ = function(s){ return document.querySelector(s); };
@@ -271,11 +282,11 @@
   /* ---------- render ---------- */
   function render(){
     var app = $('#app'); app.innerHTML = '';
-    var main = h('div'), side = h('div', { class: 'side' });
-    app.appendChild(h('div', { class: 'wrap' }, [main, side]));
+    var main = h('div', { class: 'wrap1' });
+    app.appendChild(main);
 
-    /* Header card */
-    var hc = h('div', { class: 'card' }, [h('h2', { text: 'Header' })]);
+    /* Header card (folded away, below the top menu) */
+    var hc = h('div', { class: 'card' });
     hc.appendChild(field('Logo image', cur.logo, 'src', 'img', { img: true }));
     hc.appendChild(h('div', { class: 'grid2' }, [
       field('Phone shown as', cur.phone, 'label', 'label', { ph: '604-998-8884' }),
@@ -294,7 +305,6 @@
       ]));
     });
     hc.appendChild(h('button', { class: 'btn add', type: 'button', text: '+ Add link', onclick: function(){ cur.utilityLinks.push({ label: '', href: '' }); render(); } }));
-    main.appendChild(hc);
 
     /* Top menu card: left to right, like the real nav bar */
     var tc = h('div', { class: 'card' }, [h('h2', { text: 'Top menu' })]);
@@ -324,6 +334,10 @@
       tc.appendChild(itemBody(sel));
     }
     main.appendChild(tc);
+    var hd = h('details', { class: 'hdr' }, [h('summary', { text: 'Logo, phone, tagline & top-right links ▾' }), hc]);
+    if (hdrOpen) hd.open = true;
+    hd.addEventListener('toggle', function(){ hdrOpen = hd.open; });
+    main.appendChild(hd);
 
     main.appendChild(h('details', {}, [h('summary', { text: 'View data' }), h('pre', { id: 'json' })]));
     main.appendChild(h('details', { style: 'margin-top:8px' }, [h('summary', { text: 'How this works' }), h('div', { class: 'small stack', style: 'margin-top:8px' }, [
@@ -332,16 +346,6 @@
       h('div', { text: 'Images: copy the image link from Media Storage and paste it here.' })
     ])]));
 
-    /* Side: what changed + who + note */
-    side.appendChild(h('div', { class: 'card' }, [
-      h('h2', { text: 'What changed' }),
-      h('div', { id: 'changes' }),
-      h('div', { class: 'stack', style: 'margin-top:16px' }, [
-        h('div', { class: 'f' }, [h('label', { text: "Who's changing the menu?" }), whoSelect()]),
-        h('div', { class: 'f' }, [h('label', { text: 'What did you change?' }), noteBox()]),
-        h('div', { class: 'small', text: 'No passwords in here.' })
-      ])
-    ]));
     update();
   }
 
@@ -434,28 +438,22 @@
   function state(){
     var c = cleanCopy();
     var ch = diff(orig, c), bad = problems(c);
-    var who = ($('#who') || {}).value || '', note = (($('#note') || {}).value || '').trim();
-    return { menu: c, changes: ch, bad: bad, who: who, note: note,
-      ready: ch.length > 0 && !bad && !!who && note.length >= 3 };
+    var who = ($('#who') || {}).value || '';
+    return { menu: c, changes: ch, bad: bad, who: who, ready: ch.length > 0 && !bad };
   }
   function update(){
     var s = state();
-    var box = $('#changes');
-    if (box) {
-      box.innerHTML = '';
-      if (!s.changes.length) box.appendChild(h('div', { class: 'none', text: 'No changes yet' }));
-      else box.appendChild(h('ul', { class: 'changes' }, s.changes.map(function(c){ return h('li', { text: c }); })));
-      if (s.bad) box.appendChild(h('div', { class: 'err', style: 'display:block;margin-top:8px', text: s.bad + ' thing' + (s.bad > 1 ? 's' : '') + ' to fix (marked in red)' }));
-    }
+    var pb = $('#publish');
+    pb.textContent = s.changes.length ? 'Publish (' + s.changes.length + ')' : 'Publish';
     var j = $('#json'); if (j) j.textContent = JSON.stringify(s.menu, null, 2);
     pvUpdate();
     $('#publish').disabled = !s.ready || publishing;
-    $('#publish').title = s.ready ? '' : (!s.changes.length ? 'Make a change first' : s.bad ? 'Fix the fields marked in red' : !s.who ? "Pick who's changing the menu" : 'Add a short note');
+    $('#publish').title = s.ready ? '' : (!s.changes.length ? 'Make a change first' : 'Fix ' + s.bad + ' field' + (s.bad > 1 ? 's' : '') + ' marked in red');
   }
 
   /* ---------- live preview ---------- */
   var pvFrame = null, pvReady = false, pvMode = 'desktop', pvTimer = null;
-  var DESK_W = 1280, DESK_H = 540, PHONE_W = 390, PHONE_H = 640;
+  var DESK_W = 1280, PHONE_W = 390, pvH = 120;
   function pvSrc(){
     var js = 'https://northshorebuzz.github.io/clients/' + CFG.site + '/menu.js?v=' + Date.now();
     return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' +
@@ -468,19 +466,19 @@
     var box = $('#pvbox');
     if (pvMode === 'desktop') {
       var sc = Math.min(1, box.clientWidth / DESK_W);
-      pvFrame.style.width = DESK_W + 'px'; pvFrame.style.height = DESK_H + 'px';
+      pvFrame.style.width = DESK_W + 'px'; pvFrame.style.height = pvH + 'px';
       pvFrame.style.transform = 'scale(' + sc + ')';
-      box.style.height = Math.round(DESK_H * sc) + 'px';
+      box.style.height = Math.round(pvH * sc) + 'px';
     } else {
       pvFrame.style.transform = 'none';
-      pvFrame.style.width = PHONE_W + 'px'; pvFrame.style.height = PHONE_H + 'px';
+      pvFrame.style.width = PHONE_W + 'px'; pvFrame.style.height = pvH + 'px';
       box.style.height = 'auto';
     }
   }
   function pvBuild(){
     var box = $('#pvbox');
     box.className = 'pvbox' + (pvMode === 'phone' ? ' phone' : '');
-    box.innerHTML = ''; pvReady = false;
+    box.innerHTML = ''; pvReady = false; pvH = 120;
     pvFrame = h('iframe', { title: 'Menu preview' });
     pvFrame.srcdoc = pvSrc();
     box.appendChild(pvFrame);
@@ -492,7 +490,9 @@
   }
   function pvUpdate(){ clearTimeout(pvTimer); pvTimer = setTimeout(pvSend, 150); }
   window.addEventListener('message', function(e){
-    if (pvFrame && e.source === pvFrame.contentWindow && e.data && e.data.type === 'moso-menu-ready') { pvReady = true; pvSend(); }
+    if (!pvFrame || e.source !== pvFrame.contentWindow || !e.data) return;
+    if (e.data.type === 'moso-menu-ready') { pvReady = true; pvSend(); }
+    if (e.data.type === 'moso-menu-height') { pvH = Math.max(80, e.data.h); pvSize(); }
   });
   window.addEventListener('resize', pvSize);
   Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function(b){
@@ -510,37 +510,44 @@
 
   $('#publish').addEventListener('click', function(){
     var s = state(); if (!s.ready) return;
-    var go = h('button', { class: 'btn primary', type: 'button', text: 'Publish now' });
+    var go = h('button', { class: 'btn primary', type: 'button', text: 'Publish now', disabled: true });
+    var note = h('textarea', { rows: 2, placeholder: 'e.g. Renamed Tiles to Terra Tiles' });
+    var whoMsg = h('div', { class: 'err', style: 'display:' + (s.who ? 'none' : 'block'), text: "Pick your name at the top first" });
     var out = h('div');
+    var check = function(){ go.disabled = publishing || !s.who || note.value.trim().length < 3; };
+    note.addEventListener('input', check);
     go.onclick = function(){
+      var noteText = note.value.trim();
       publishing = true; go.disabled = true; go.textContent = 'Publishing…';
       fetch(API + '/menu', { method: 'POST', headers: { 'Authorization': 'Bearer ' + CFG.key, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sha: sha, who: s.who, note: s.note, menu: s.menu }) })
+        body: JSON.stringify({ sha: sha, who: s.who, note: noteText, menu: s.menu }) })
         .then(function(r){ return r.json().then(function(j){ return { status: r.status, j: j }; }); })
         .then(function(res){
           publishing = false;
           if (res.j.ok) {
-            $('#note').value = '';
             modal([h('h3', { text: 'Published ✓' }), h('div', { text: 'Menu version ' + res.j.version + ' is saved. The website updates in 1 to 10 minutes.' }),
               h('div', { style: 'margin-top:16px' }, [h('button', { class: 'btn primary', type: 'button', text: 'Done', onclick: function(){ closeModal(); load(); } })])]);
           } else {
             out.innerHTML = '';
             out.appendChild(h('div', { class: 'msg bad' }, [res.j.error || 'Something went wrong'].concat((res.j.problems || []).map(function(p){ return h('div', { text: '• ' + p }); }))));
-            go.disabled = false; go.textContent = res.status === 409 ? 'Reload needed' : 'Try again';
-            if (res.status === 409) go.onclick = function(){ closeModal(); load(); };
+            go.textContent = res.status === 409 ? 'Reload needed' : 'Try again'; check();
+            if (res.status === 409) { go.disabled = false; go.onclick = function(){ closeModal(); load(); }; }
           }
           update();
         })
-        .catch(function(){ publishing = false; go.disabled = false; go.textContent = 'Try again'; out.innerHTML = ''; out.appendChild(h('div', { class: 'msg bad', text: "Couldn't reach the menu service. Check your connection and try again." })); });
+        .catch(function(){ publishing = false; go.textContent = 'Try again'; check(); out.innerHTML = ''; out.appendChild(h('div', { class: 'msg bad', text: "Couldn't reach the menu service. Check your connection and try again." })); });
     };
     modal([
       h('h3', { text: 'Ready to publish' }),
       h('ul', { class: 'changes' }, s.changes.map(function(c){ return h('li', { text: c }); })),
-      h('div', { class: 'small', style: 'margin-top:12px' }, ['By ', h('b', { text: s.who }), ' · ', s.note]),
+      h('div', { class: 'f', style: 'margin-top:14px' }, [h('label', { text: 'What did you change?' }), note]),
+      whoMsg,
+      h('div', { class: 'small', text: (s.who ? 'Publishing as ' + s.who + '. ' : '') + 'No passwords in here.' }),
       out,
       h('div', { style: 'margin-top:16px;display:flex;gap:8px;justify-content:flex-end' }, [
         h('button', { class: 'btn', type: 'button', text: 'Back', onclick: function(){ if (!publishing) closeModal(); } }), go])
     ]);
+    note.focus();
   });
 
   $('#undo').addEventListener('click', function(){ if (!orig) return; cur = clone(orig); open = new WeakSet(); sel = null; render(); });
@@ -558,6 +565,7 @@
         if (orig.version) m.push('Menu version ' + orig.version);
         if (orig.updated) m.push('last changed ' + orig.updated + (orig.updatedBy ? ' by ' + orig.updatedBy : ''));
         $('#meta').textContent = m.join(' · ');
+        var ws = $('#whoSpot'); ws.innerHTML = ''; ws.appendChild(whoSelect());
         render();
         if (!pvFrame) { $('#pv').style.display = ''; pvBuild(); } else pvSend();
       })
