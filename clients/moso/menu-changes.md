@@ -2,6 +2,15 @@
 
 Every publish from the Menu Editor, newest first. Written by the NSB Menu Editor Worker.
 
+## v3 · Nov 28, 2026, 1:17 p.m. PT · Buzz
+
+**Note:** Return the Contacts to Contact
+
+- Added top item "Contact"
+- Removed top item "Contacts"
+
+[See the exact change](https://github.com/northshorebuzz/northshorebuzz.github.io/commit/ced4ccabd7274c92f173b8db64bb767edb0957db)
+
 ## v2 · Nov 28, 2026, 1:16 p.m. PT · Buzz
 
 **Note:** Tweaking menu to read contacts, will change back soon
