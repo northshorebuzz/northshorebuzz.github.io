@@ -1,0 +1,713 @@
+/* BACKUP of the pasted page CSS on /pdf/moso-25-year-warranty-168463 (moso-bamboo.ca), pulled 2026-11-28T18:26:42.681Z before the swap to brand.css.
+   Rollback: paste everything below back into this page's Custom CSS box in the builder, then publish.
+   Not loaded by anything. */
+
+/* ============================================
+   TYPOGRAPHY — locked system
+   Sizing/line-height/margins/colors all confirmed live on
+   moso-bamboo-outdoor.com AND MOSO's own official global
+   site (moso-bamboo.com, EN + NL) — both match exactly.
+   Text = #000000, green = #009F4B. The brand book PDF's
+   literal PMS conversion (#372900 / #45AC34) does NOT match
+   any live MOSO site checked, including their own official
+   one — so live practice wins over the literal PDF value.
+   Full detail: MD Files/moso-typography-color-reference.md.
+
+   GHL's per-element Typography panel writes a scoped,
+   !important override the moment ANY manual field is
+   touched (font, size, weight, line-height, letter-spacing)
+   — even just nudging one value. These rules are boosted
+   with :not(#nsb-boost) to ID-level specificity so they
+   always win over that, locking every heading/paragraph to
+   the system by default.
+
+   Every locked property is applied to BOTH the element and
+   all of its descendants (the `x:not(#nsb-boost) *` half of
+   each selector) — this closes off stray inline tags like
+   <strong>/<b>/<span> picking up browser defaults or GHL
+   inline styles instead of the locked look. Margins are the
+   one exception, left on the element only (they don't apply
+   to inline descendants anyway).
+
+   The ONLY way to intentionally break out: add the
+   font-override class to that specific element (or the
+   specific inline descendant, e.g. the <strong> itself).
+   Selecting "Custom" in GHL alone does nothing without it —
+   font-override's specificity is deliberately higher than
+   every rule below so it always wins.
+   ============================================ */
+
+h1:not(#nsb-boost), h1:not(#nsb-boost) *,
+h2:not(#nsb-boost), h2:not(#nsb-boost) *,
+h3:not(#nsb-boost), h3:not(#nsb-boost) *,
+h4:not(#nsb-boost), h4:not(#nsb-boost) *,
+h5:not(#nsb-boost), h5:not(#nsb-boost) *,
+h6:not(#nsb-boost), h6:not(#nsb-boost) *,
+p:not(#nsb-boost), p:not(#nsb-boost) *,
+li:not(#nsb-boost), li:not(#nsb-boost) * {
+    font-family: Montserrat, sans-serif !important;
+}
+
+h1:not(#nsb-boost), h1:not(#nsb-boost) * {
+    font-size: 45px !important;
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+    color: #000000 !important;
+}
+h1:not(#nsb-boost) {
+    margin-top: 0 !important;
+    margin-bottom: 20px !important;
+}
+
+h2:not(#nsb-boost), h2:not(#nsb-boost) * {
+    font-size: 35px !important;
+    font-weight: 500 !important;
+    line-height: 1.16 !important;
+    color: #000000 !important;
+}
+h2:not(#nsb-boost) {
+    margin-top: 0 !important;
+    margin-bottom: 8px !important;
+}
+
+h3:not(#nsb-boost), h3:not(#nsb-boost) * {
+    font-size: 25px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    color: #000000 !important;
+}
+h3:not(#nsb-boost) {
+    margin-top: 0 !important;
+    margin-bottom: 8px !important;
+}
+
+h4:not(#nsb-boost), h4:not(#nsb-boost) * {
+    font-size: 20px !important;
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+    color: #000000 !important;
+}
+h4:not(#nsb-boost) {
+    margin-top: 0 !important;
+    margin-bottom: 8px !important;
+}
+
+h5:not(#nsb-boost), h5:not(#nsb-boost) * {
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    line-height: 1.35 !important;
+    color: #000000 !important;
+}
+h5:not(#nsb-boost) {
+    margin-top: 0 !important;
+    margin-bottom: 8px !important;
+}
+
+h6:not(#nsb-boost), h6:not(#nsb-boost) * {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    line-height: 1.35 !important;
+    color: #000000 !important;
+}
+h6:not(#nsb-boost) {
+    margin-top: 0 !important;
+    margin-bottom: 8px !important;
+}
+
+h3.on-dark:not(#nsb-boost), h3.on-dark:not(#nsb-boost) *,
+.overlay h3:not(#nsb-boost), .overlay h3:not(#nsb-boost) * {
+    color: #ffffff !important;
+}
+
+p:not(#nsb-boost), p:not(#nsb-boost) *,
+li:not(#nsb-boost), li:not(#nsb-boost) * {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 26px !important;
+    color: #000000 !important;
+}
+
+.lead-paragraph:not(#nsb-boost), .lead-paragraph:not(#nsb-boost) * {
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    line-height: 28px !important;
+    color: #000000 !important;
+}
+
+.nav-menu-text:not(#nsb-boost), .nav-menu-text:not(#nsb-boost) * {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 26px !important;
+}
+
+/* ============================================
+   BOLD / ITALIC CARVE-OUT — inline emphasis, sitewide
+   The locked typography above sets font-weight on BOTH the
+   element and all its descendants (`li:not(#nsb-boost) *`),
+   which is what stops stray GHL spans drifting — but it also
+   flattens a <strong> or <b> inside a heading, paragraph or
+   list item back to the body weight. Result: bolding a few
+   words in GHL's text editor appeared to do nothing.
+
+   This restores it. Only font-weight is released, and only
+   on real inline emphasis tags — everything else (family,
+   size, line-height, colour) stays locked, so a bolded word
+   still sits in the system.
+
+   No class needed. Bold works in every heading, paragraph
+   and bullet list on the site, straight from GHL's editor
+   toolbar. Boosted to double-ID specificity so it clears
+   GHL's per-element Typography overrides; .font-override
+   still outranks it, so the escape hatch is unchanged.
+   ============================================ */
+
+:is(h1, h2, h3, h4, h5, h6, p, li, .lead-paragraph):not(#nsb-boost):not(#nsb-boost2) :is(strong, b) {
+    font-weight: 700 !important;
+}
+
+:is(h1, h2, h3, h4, h5, h6, p, li, .lead-paragraph):not(#nsb-boost):not(#nsb-boost2) :is(em, i:not([class])) {
+    font-style: italic !important;
+}
+
+/* ============================================
+   BUTTONS — locked system (.btn-primary / .btn-outline)
+   Pill-shaped, Montserrat, matches live brand colors.
+   Wrap the pair in .btn-group for hero/CTA rows — it wraps
+   buttons onto their own line instead of letting them shrink
+   and overlap/crisscross when the container narrows.
+   ============================================ */
+
+.btn-group {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 16px !important;
+}
+
+.btn-primary, .btn-outline {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    font-family: Montserrat, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    padding: 16px 32px !important;
+    border-radius: 999px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    /* NOTE: background-color is deliberately NOT in this
+       transition list. Verified live 2026-09-15: putting
+       background-color into a transition on a GHL native
+       button freezes the background — it holds its start
+       value and never repaints, so :hover fill silently
+       does nothing (text and border still flip, which is
+       what makes it look half-broken). Tested on fresh
+       cloned elements: transition:none works, transition
+       without background-color works, transition WITH
+       background-color fails every time. The fill therefore
+       snaps instantly; text and border still fade. Do not
+       add background-color back to this list. */
+    transition: color .15s ease, border-color .15s ease !important;
+}
+
+.btn-primary {
+    background-color: #009F4B !important;
+    border: 2px solid #009F4B !important;
+}
+
+.btn-primary:not(#nsb-boost), .btn-primary:not(#nsb-boost) * {
+    color: #ffffff !important;
+}
+
+.btn-primary:hover {
+    background-color: #007839 !important;
+    border-color: #007839 !important;
+}
+
+.btn-primary:hover:not(#nsb-boost), .btn-primary:hover:not(#nsb-boost) * {
+    color: #ffffff !important;
+}
+
+/* Outline / ghost button. Resting: transparent with a black
+   hairline and black text. Hover: fills solid black, text
+   flips to white. This IS the default outline behaviour —
+   add .btn-outline to a GHL Button and it just happens, no
+   per-button hover setup in GHL needed.
+
+   Colour is set on the element AND its descendants, because
+   GHL wraps button labels in inner spans that would
+   otherwise keep their own colour on hover. The
+   :not(#nsb-boost) boost keeps it above GHL's generated
+   per-button rules. */
+
+.btn-outline {
+    background-color: transparent !important;
+    border: 2px solid #000000 !important;
+}
+.btn-outline:not(#nsb-boost), .btn-outline:not(#nsb-boost) * {
+    color: #000000 !important;
+}
+.btn-outline:hover {
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+}
+.btn-outline:hover:not(#nsb-boost), .btn-outline:hover:not(#nsb-boost) * {
+    color: #ffffff !important;
+}
+
+/* ============================================
+   GHL NATIVE "BUTTON" ELEMENTS (GHL's own Button element
+   type, class .c-button / a.btn-vp / a.btn-hp — NOT the
+   .btn-primary/.btn-outline system above).
+
+   FONT ONLY. Colour is deliberately NOT forced here.
+
+   GHL already writes a correct per-button colour rule from
+   the Button element's own Style panel (verified live
+   2026-09-15: filled buttons render var(--white), outline
+   buttons var(--black)). An earlier blanket
+   `color: #000000 !important` on these selectors was
+   overriding every one of those settings, which is why
+   white-on-green buttons were coming out black — the fix is
+   to stop overriding, not to add per-button classes.
+
+   So: text colour for any GHL native button is set IN GHL,
+   per button, under the Button element > Style > Text
+   Colour. No CSS class needed, ever. Hover is likewise left
+   to GHL (its own hover/animation classes, e.g. hvr-fade).
+
+   Only font-family is locked, because GHL otherwise renders
+   these in Inter Tight, outside the type system. Structure,
+   padding, icons, colours and hover are all untouched.
+   ============================================ */
+
+.c-button, .c-button *,
+a.btn-vp, a.btn-vp *,
+a.btn-hp, a.btn-hp * {
+    font-family: Montserrat, sans-serif !important;
+}
+
+/* ============================================
+   FORM SUBMIT BUTTONS — GHL forms, sitewide
+   GHL form submit buttons render from the form builder's
+   own Style settings, outside the button system. This
+   matches them to .btn-primary: green pill, Montserrat
+   15/700, 16px 32px padding, darker green on hover, auto
+   width, centred.
+
+   No class needed — every GHL form placed on a page picks
+   this up. Forms embedded as an iframe on another website
+   can't see this CSS (not an issue on this site).
+   background-color is NOT transitioned, on purpose (GHL
+   freezes transitioned backgrounds — see BUTTONS note).
+   ============================================ */
+
+.form-builder--btn-submit:not(#nsb-boost) {
+    text-align: center !important;
+}
+
+.form-builder--btn-submit:not(#nsb-boost) button,
+#_builder-form:not(#nsb-boost) button[type="submit"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    white-space: nowrap !important;
+    font-family: Montserrat, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    padding: 16px 32px !important;
+    border-radius: 999px !important;
+    background-color: #009F4B !important;
+    border: 2px solid #009F4B !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    transition: color .15s ease, border-color .15s ease !important;
+}
+
+.form-builder--btn-submit:not(#nsb-boost) button *,
+#_builder-form:not(#nsb-boost) button[type="submit"] *,
+.form-builder--btn-submit:not(#nsb-boost) button,
+#_builder-form:not(#nsb-boost) button[type="submit"] {
+    font-family: Montserrat, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+}
+
+.form-builder--btn-submit:not(#nsb-boost) button:hover,
+#_builder-form:not(#nsb-boost) button[type="submit"]:hover {
+    background-color: #007839 !important;
+    border-color: #007839 !important;
+}
+
+/* ============================================
+   FORM LAYOUT — GHL forms, sitewide
+   Replaces the per-form Custom CSS, so forms need NO CSS of
+   their own. Every GHL form placed on a page gets:
+   - form box centred in its container
+   - solid white background (overrides the form builder's
+     Background setting)
+   - equal 24px left/right padding (overrides lopsided
+     builder padding)
+   - headings / paragraph text inside the form centred
+   - labels (e.g. "Required *") left-aligned, flush with
+     the fields
+   - typed text in fields left-aligned
+   Top/bottom padding is still set in the form builder.
+   ============================================ */
+
+#_builder-form:not(#nsb-boost),
+.form-builder--wrapper:not(#nsb-boost) {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+}
+
+#_builder-form:not(#nsb-boost) {
+    background-color: #ffffff !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+}
+
+#_builder-form:not(#nsb-boost) :is(h1, h2, h3, h4, h5, h6, p) {
+    text-align: center !important;
+}
+
+#_builder-form:not(#nsb-boost) label {
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+}
+
+#_builder-form:not(#nsb-boost) :is(input, textarea, select) {
+    text-align: left !important;
+}
+
+/* Tighter gap above the submit button. Two sources of extra
+   space, verified live 2026-09-16:
+   1. GHL adds a 15px top margin to the submit button row.
+   2. GHL's hidden (spam-trap) field is invisible but its row
+      wrapper still keeps its 16px bottom margin.
+   Both removed — closes ~31px between the Cloudflare check
+   and the button. */
+#_builder-form:not(#nsb-boost) .form-builder--btn-submit {
+    margin-top: 0 !important;
+}
+#_builder-form:not(#nsb-boost) .form-field-wrapper:has(> .form-field-container > div > .d-none.field-container) {
+    margin-bottom: 0 !important;
+}
+
+/* ============================================
+   IMAGE HOVER ZOOM
+   Apply .img-zoom-hover directly to a GHL Image element
+   (Advanced > CSS Class). Scales the image ~5% on hover.
+   Pure transform on the image itself, no parent clipping —
+   if the image sits in a tight grid with little breathing
+   room, the enlarged edges will visually overlap neighbouring
+   elements on hover. That's expected for this effect, not a
+   bug — flag if a clipped/framed version is wanted instead.
+   ============================================ */
+
+.img-zoom-hover {
+    transition: transform 0.35s ease !important;
+}
+
+.img-zoom-hover:hover {
+    transform: scale(1.05) !important;
+}
+
+/* ============================================
+   IMAGE LIGHTBOX — click to view full screen
+   Apply .img-lightbox to a GHL Image element
+   (Advanced > CSS Class). Clicking it opens the image
+   full screen on a dark overlay. Click anywhere, the x,
+   or press Esc to close. Stacks fine with .img-zoom-hover
+   (add both classes, space-separated).
+
+   Needs the NSB lightbox script in the site Body Tracking
+   Code — CSS alone can not react to clicks. The script
+   builds the overlay (#nsb-lb) on first click; these
+   rules style it. Works whether GHL puts the class on the
+   image or its wrapper.
+   ============================================ */
+
+.img-lightbox, .img-lightbox img {
+    cursor: zoom-in !important;
+}
+
+#nsb-lb {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 999999 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(0, 0, 0, 0.9) !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s ease, visibility .25s ease;
+    cursor: zoom-out !important;
+}
+
+#nsb-lb.nsb-lb-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+#nsb-lb img {
+    max-width: 94vw !important;
+    max-height: 92vh !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    border-radius: 0 !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+    transform: scale(.96);
+    transition: transform .25s ease;
+}
+
+#nsb-lb.nsb-lb-open img {
+    transform: scale(1);
+}
+
+#nsb-lb-close {
+    position: absolute !important;
+    top: 16px !important;
+    right: 20px !important;
+    background: none !important;
+    border: 0 !important;
+    color: #ffffff !important;
+    font-family: Montserrat, sans-serif !important;
+    font-size: 40px !important;
+    line-height: 1 !important;
+    padding: 4px 10px !important;
+    cursor: pointer !important;
+}
+
+/* ============================================
+   FOOTER SOCIAL ICONS
+   Four GHL Image elements (Instagram / Facebook /
+   YouTube / LinkedIn), each hosted in the GHL media
+   library as its own SVG. Recreates the boxed look from
+   the old WordPress footer: white rounded square, light
+   hairline border, small centred icon.
+
+   Apply .moso-social-icon to each of the four Image
+   elements (Advanced > CSS Class). The class lands on
+   GHL's image wrapper, so the box is drawn on the
+   wrapper and the inner <img> is sized down to sit
+   inside it.
+
+   .moso-social-row goes on the div/container holding the
+   four images, and is REQUIRED — GHL stacks elements
+   vertically by default, so this is what lays them out
+   side by side, centred, with equal 16px gaps.
+
+   Build order: place the div + four Image elements first,
+   then add the class names. Nothing here renders until
+   those elements exist.
+
+   The icon colour lives in the SVG files themselves, not
+   here — an <img> can't be recoloured by CSS. To change
+   icon colour, re-export the SVGs. Hover therefore moves
+   the border to brand green and fades the icon slightly,
+   rather than recolouring it.
+   ============================================ */
+
+.moso-social-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 16px !important;
+}
+
+.moso-social-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+    width: 64px !important;
+    height: 64px !important;
+    padding: 0 !important;
+    border: 1px solid #E5E2DA !important;
+    border-radius: 12px !important;
+    background-color: #ffffff !important;
+    overflow: hidden !important;
+    transition: border-color .15s ease !important;
+}
+
+.moso-social-icon img {
+    display: block !important;
+    width: 26px !important;
+    height: 26px !important;
+    max-width: 26px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    object-fit: contain !important;
+    transition: opacity .15s ease !important;
+}
+
+.moso-social-icon:hover {
+    border-color: #009F4B !important;
+}
+
+.moso-social-icon:hover img {
+    opacity: 0.7 !important;
+}
+
+@media (max-width: 768px) {
+    .moso-social-row {
+        gap: 12px !important;
+    }
+
+    .moso-social-icon {
+        width: 56px !important;
+        height: 56px !important;
+    }
+
+    .moso-social-icon img {
+        width: 24px !important;
+        height: 24px !important;
+        max-width: 24px !important;
+    }
+}
+
+/* ============================================
+   BULLET POINTS — half-size bullets
+   Apply .bullet-points to a GHL Bullet List element
+   (Advanced > CSS Class). Shrinks ONLY the bullet to 8px
+   (half the 16px list text); the text itself stays on the
+   locked 16px / 26px system.
+
+   Covers every way GHL can draw a bullet:
+   - native list dots (::marker)
+   - picked icons (<i> icon font, <svg>, icon spans)
+   - pseudo-element bullets (::before)
+   The class + :not(#nsb-boost) out-ranks the sitewide
+   `li:not(#nsb-boost) *` rule, which would otherwise force
+   the icon to 16px like the text.
+   ============================================ */
+
+.bullet-points:not(#nsb-boost) li::marker {
+    font-size: 8px !important;
+}
+
+.bullet-points:not(#nsb-boost) li i[class],
+.bullet-points:not(#nsb-boost) li i[class]::before,
+.bullet-points:not(#nsb-boost) li [class*="icon"],
+.bullet-points:not(#nsb-boost) li [class*="icon"]::before,
+.bullet-points:not(#nsb-boost) li::before {
+    font-size: 8px !important;
+    vertical-align: middle !important;
+}
+
+.bullet-points:not(#nsb-boost) li svg {
+    width: 8px !important;
+    height: 8px !important;
+    vertical-align: middle !important;
+}
+
+/* ============================================
+   PROJECT DETAILS — white text on dark sections
+   Apply .project-details to the SECTION only
+   (Advanced > CSS Class). Every heading, paragraph, bullet
+   list and lead paragraph inside it — across all its rows,
+   columns and elements — turns white. No class needed on
+   anything inside.
+
+   Only colour changes. Font, size, weight, line-height and
+   margins stay on the locked system. Buttons inside keep
+   their own colours (.btn-primary / .btn-outline / GHL
+   native buttons are not touched). .font-override still
+   outranks this.
+   ============================================ */
+
+.project-details:not(#nsb-boost) :is(h1, h2, h3, h4, h5, h6, p, li, .lead-paragraph),
+.project-details:not(#nsb-boost) :is(h1, h2, h3, h4, h5, h6, p, li, .lead-paragraph) * {
+    color: #ffffff !important;
+}
+
+/* ============================================
+   NEW HERO — white text in hero sections
+   Apply .new-hero to the hero SECTION only
+   (Advanced > CSS Class). Every heading, paragraph, bullet
+   list and lead paragraph inside it turns white (#FFFFFF)
+   instead of the sitewide black. No class needed on
+   anything inside.
+
+   Only colour changes. Font, size, weight, line-height and
+   margins stay on the locked system, so hero text matches
+   the rest of the site. Buttons inside keep their own
+   colours. .font-override still outranks this.
+   ============================================ */
+
+.new-hero:not(#nsb-boost) :is(h1, h2, h3, h4, h5, h6, p, li, .lead-paragraph),
+.new-hero:not(#nsb-boost) :is(h1, h2, h3, h4, h5, h6, p, li, .lead-paragraph) * {
+    color: #ffffff !important;
+}
+
+/* escape hatch — the ONLY way an element opts out of the
+   system. Add class="font-override" in GHL's element
+   Advanced > CSS Class field after selecting Custom, or
+   nothing above will budge. Works whether applied to the
+   heading/paragraph itself or to one specific inline
+   descendant inside it (e.g. just the <strong>) — its
+   specificity beats every descendant rule above either way. */
+.font-override:not(#nsb-boost):not(#nsb-boost2) {
+    font-family: unset !important;
+    font-size: unset !important;
+    font-weight: unset !important;
+    line-height: unset !important;
+    color: unset !important;
+    margin-top: unset !important;
+    margin-bottom: unset !important;
+}
+
+@media (max-width: 768px) {
+    h1:not(#nsb-boost), h1:not(#nsb-boost) * {
+        font-size: 28.8px !important;
+        line-height: 1.25 !important;
+    }
+}
+
+@media (max-width: 1024px) {
+  #section-DKSCqwFKZ,
+  #row-Tv3JIiEzni,
+  #col-dpN8ymkQcF,
+  #section-fW9o2fF4P,
+  #row-HYDLEOEmho,
+  #col-Xrd8ObdYur,
+  #row-jb7xnhWJTm,
+  #col-BHclzGNmtz,
+  #section-kJJtJSarUH,
+  #row-EedrtdOOXl,
+  #col-V7ZZiXdtgU,
+  #section-XAHa1YB93B,
+  #row-clHO4qGck-7,
+  #col-lgI-OApCa2y,
+  #col-bJp1JzhvIn7,
+  #col-Fy3m_oWVJCZ,
+  #col-Da7L5Pu1qcP,
+  #section-vi5B8BYqDg,
+  #row-VdXHnoeSfy,
+  #col-GslQp9BwUC,
+  #col-fNaDniTsw9,
+  #col-b3Vcp2zruW,
+  #row-Txy7mKPCqi,
+  #col-TQ8AGHlWR5,
+  #col-tJ_tiBOqKR,
+  #col-9GBT97_yVC,
+  #col-pi8pApYNRj {
+    animation: none !important;
+  }
+}
