@@ -1,14 +1,17 @@
 /* ============================================================
-   MOSO BAMBOO CANADA — NAV / MEGA MENU (Version 1 on GitHub)
-   Draws the whole site menu (desktop mega menu + mobile menu).
+   MOSO BAMBOO CANADA — NAV / MEGA MENU (Version 2 on GitHub)
+   Draws the whole site menu (desktop mega menu + mobile menu)
+   from ONE list: clients/moso/menu.json.
    Loaded by the menu's Custom Code element in the header global
    section (pasted once, never changes):
      <div id="moso-menu"></div>
      <script src="https://northshorebuzz.github.io/clients/moso/menu.js" defer></script>
 
-   To change links, labels or images: edit MARKUP below and push.
-   Menu images: the data-img / src URLs in MARKUP (menu image update skill).
-   Styles: CSS below. Behaviour: the function at the bottom.
+   To change links, labels, logo, phone, tagline or images:
+   edit menu.json (MOSO Menu Editor app, or Claude), not this file.
+   This file = styles (CSS) + drawing (build) + behaviour.
+   V2 (Nov 28, 2026): menu split out into menu.json. Draws the
+     same HTML as V1. V1 kept at backup/menu-v1-2026-11-28.js.
    V1 (Nov 28, 2026): copied word for word from the "MOSO Menu — Current"
    artifact (v25). That artifact is now a reference copy only.
    ============================================================ */
@@ -434,163 +437,75 @@
   }
 `;
 
-  var MARKUP = `
-<header class="moso-nav" id="mosoNav">
-  <div class="moso-nav__inner">
-    <div class="moso-nav__bar">
-      <a class="moso-logo" href="/" aria-label="MOSO Bamboo home">
-        <img
-          src="https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6abffd53f30b488137b91c37.jpg"
-          alt="MOSO Bamboo"
-        />
-      </a>
+  var DATA_URL = 'https://northshorebuzz.github.io/clients/moso/menu.json';
+  var PHONE_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 0 0-1.02.24l-2.2 2.2a15.074 15.074 0 0 1-6.59-6.59l2.2-2.21c.27-.27.35-.66.24-1.01A11.36 11.36 0 0 1 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>';
+  var PHONE_SVG_SMALL = PHONE_SVG.replace('aria-hidden="true"', 'aria-hidden="true" style="width:14px;height:14px;fill:currentColor;"');
+  var CHEV = '<svg class="moso-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>';
 
-      <div class="moso-desktop">
-        <div class="moso-util">
-          <a href="/contact-us">Order a sample</a>
-          <a class="moso-phone" href="tel:6049988884">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 0 0-1.02.24l-2.2 2.2a15.074 15.074 0 0 1-6.59-6.59l2.2-2.21c.27-.27.35-.66.24-1.01A11.36 11.36 0 0 1 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>
-            604-998-8884
-          </a>
-          <span class="moso-tagline">Naturally Beautiful Beyond Sustainable</span>
-        </div>
+  /* Escape text for HTML; titles keep line breaks (\n -> <br/>). */
+  function esc(s){
+    return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function title(s){ return esc(s).replace(/\n/g, '<br/>'); }
+  function dropdowns(m){ return (m.items || []).filter(function(i){ return i.type === 'dropdown'; }); }
 
-        <nav class="moso-mainnav">
-          <button class="moso-trigger" type="button" data-target="mosoPanelProducts">
-            <span>Products</span>
-            <svg class="moso-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
+  function build(m){
+    var tel = esc(m.phone && m.phone.number);
+    var phoneLabel = esc(m.phone && m.phone.label);
+    var util = (m.utilityLinks || []).map(function(u){
+      return '<a href="' + esc(u.href) + '">' + esc(u.label) + '</a>';
+    }).join('');
 
-          <a class="moso-simple" href="/architects">Architects</a>
+    var main = (m.items || []).map(function(i){
+      if (i.type === 'dropdown') {
+        return '<button class="moso-trigger" type="button" data-target="mosoPanel' + esc(i.id) + '"><span>' + esc(i.label) + '</span>' + CHEV + '</button>';
+      }
+      return '<a class="moso-simple" href="' + esc(i.href) + '">' + esc(i.label) + '</a>';
+    }).join('');
 
-          <a class="moso-simple" href="/projects-canada">Projects</a>
+    var mobile = (m.items || []).map(function(i){
+      if (i.type === 'dropdown') {
+        var links = [].concat.apply([], i.panel.columns || []).map(function(l){
+          return '<a href="' + esc(l.href) + '">' + esc(l.label) + '</a>';
+        }).join('');
+        return '<div class="moso-item"><button class="moso-acc-btn" type="button" data-acc="' + esc(i.mobileId) + '">' + esc(i.label) + ' <span>\u25be</span></button><div class="moso-acc-content" id="' + esc(i.mobileId) + '">' + links + '</div></div>';
+      }
+      return '<a class="moso-simple" href="' + esc(i.href) + '">' + esc(i.label) + '</a>';
+    }).join('');
 
-          <button class="moso-trigger" type="button" data-target="mosoPanelCanada">
-            <span>Learn More</span>
-            <svg class="moso-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
+    var panels = dropdowns(m).map(function(i){
+      var p = i.panel;
+      var imgId = p.hoverImages ? ' id="mosoProductImg"' : '';
+      var imgStyle = p.hoverImages ? ' style="transition: opacity 0.2s ease;"' : '';
+      var cols = (p.columns || []).map(function(col, n){
+        var head = n === 0
+          ? '<div class="moso-col-title">' + title(p.title) + '</div>'
+          : '<div class="moso-col-title" style="visibility:hidden;pointer-events:none;user-select:none;" aria-hidden="true">' + title(p.title) + '</div>';
+        var lis = col.map(function(l){
+          var img = (p.hoverImages && l.image) ? ' data-img="' + esc(l.image) + '"' : '';
+          return '<li><a href="' + esc(l.href) + '"' + img + '>' + esc(l.label) + '</a></li>';
+        }).join('');
+        return '<div class="moso-col moso-col-compact">' + head + '<ul>' + lis + '</ul></div>';
+      }).join('');
+      return '<div class="moso-panel" id="mosoPanel' + esc(i.id) + '"><div class="moso-panel__inner"><div class="moso-panel-flex">' +
+        '<div class="moso-thumb" style="width: 280px; flex-shrink: 0;"><img' + imgId + ' src="' + esc(p.image) + '" alt="' + esc(p.imageAlt) + '"' + imgStyle + ' /></div>' +
+        '<div class="moso-cols-group">' + cols + '</div></div></div></div>';
+    }).join('');
 
-          <a class="moso-simple" href="/find-moso">Find MOSO</a>
-          <a class="moso-simple" href="/contact-us">Contact</a>
-        </nav>
-      </div>
-
-      <div class="moso-mobile-actions">
-        <a class="moso-mobile-phone" href="tel:6049988884" aria-label="Call MOSO Bamboo">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 0 0-1.02.24l-2.2 2.2a15.074 15.074 0 0 1-6.59-6.59l2.2-2.21c.27-.27.35-.66.24-1.01A11.36 11.36 0 0 1 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>
-        </a>
-        <button class="moso-mobile-toggle" id="mosoMobileToggle" type="button" aria-label="Toggle navigation">
-          \u2261
-        </button>
-      </div>
-    </div>
-
-    <div class="moso-mobile-menu" id="mosoMobileMenu">
-      <div class="moso-mobile-tagline">Naturally Beautiful Beyond Sustainable</div>
-      <div class="moso-mobile-util">
-        <a class="moso-phone" href="tel:6049988884" style="font-weight:600;color:var(--moso-primary);display:inline-flex;align-items:center;gap:6px;">
-          <svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;fill:currentColor;"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 0 0-1.02.24l-2.2 2.2a15.074 15.074 0 0 1-6.59-6.59l2.2-2.21c.27-.27.35-.66.24-1.01A11.36 11.36 0 0 1 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>
-          604-998-8884
-        </a>
-        <a href="/contact-us">Order a sample</a>
-      </div>
-      <div class="moso-mobile-list">
-        <div class="moso-item">
-          <button class="moso-acc-btn" type="button" data-acc="m-prod">Products <span>\u25be</span></button>
-          <div class="moso-acc-content" id="m-prod">
-            <a href="/decking">Decking</a>
-            <a href="/terra-tiles">Tiles</a>
-            <a href="/cladding-siding">Siding &amp; Cladding</a>
-            <a href="/privacy-screens">Privacy Screens</a>
-            <a href="/boards-beams">Boards &amp; Beams</a>
-          </div>
-        </div>
-
-        <a class="moso-simple" href="/architects">Architects</a>
-
-        <a class="moso-simple" href="/projects-canada">Projects</a>
-
-        <div class="moso-item">
-          <button class="moso-acc-btn" type="button" data-acc="m-canada">Learn More <span>\u25be</span></button>
-          <div class="moso-acc-content" id="m-canada">
-            <a href="/about-moso-canada">About MOSO Canada</a>
-            <a href="/pdf/installation-maintenance-tips-217336">Installation &amp; Maintenance</a>
-            <a href="/helpful-documents">Technical Documents</a>
-          </div>
-        </div>
-
-        <a class="moso-simple" href="/find-moso">Find MOSO</a>
-        <a class="moso-simple" href="/contact-us">Contact</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="moso-panel" id="mosoPanelProducts">
-    <div class="moso-panel__inner">
-      <div class="moso-panel-flex">
-        <div class="moso-thumb" style="width: 280px; flex-shrink: 0;">
-          <img
-            id="mosoProductImg"
-            src="https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a703687f733ec00fae.jpg"
-            alt="MOSO Bamboo Product Preview"
-            style="transition: opacity 0.2s ease;"
-          />
-        </div>
-
-        <div class="moso-cols-group">
-          <div class="moso-col moso-col-compact">
-            <div class="moso-col-title">MOSO Bamboo<br/>Products</div>
-            <ul>
-              <li>
-                <a href="/decking" data-img="https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a703687f733ec00fae.jpg">Decking</a>
-              </li>
-              <li>
-                <a href="/terra-tiles" data-img="https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a7908c778faa52cab1.jpg">Tiles</a>
-              </li>
-              <li>
-                <a href="/cladding-siding" data-img="https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a79f5a41333a6369cd.jpg">Siding &amp; Cladding</a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="moso-col moso-col-compact">
-            <div class="moso-col-title" style="visibility:hidden;pointer-events:none;user-select:none;" aria-hidden="true">MOSO Bamboo<br/>Products</div>
-            <ul>
-              <li>
-                <a href="/privacy-screens" data-img="https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aad51a216266d0c3a71f84f.jpg">Privacy Screens</a>
-              </li>
-              <li>
-                <a href="/boards-beams" data-img="https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a749f830e49b2b344f.jpg">Boards &amp; Beams</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="moso-panel" id="mosoPanelCanada">
-    <div class="moso-panel__inner">
-      <div class="moso-panel-flex">
-        <div class="moso-thumb" style="width: 280px; flex-shrink: 0;">
-          <img src="https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa89a6649f830e49b2ba2b9.jpg" alt="Learn More about MOSO" />
-        </div>
-
-        <div class="moso-cols-group">
-          <div class="moso-col moso-col-compact">
-            <div class="moso-col-title">Learn More</div>
-            <ul>
-              <li><a href="/about-moso-canada">About MOSO Canada</a></li>
-              <li><a href="/pdf/installation-maintenance-tips-217336">Installation &amp; Maintenance</a></li>
-              <li><a href="/helpful-documents">Technical Documents</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-`;
+    return '<header class="moso-nav" id="mosoNav"><div class="moso-nav__inner"><div class="moso-nav__bar">' +
+      '<a class="moso-logo" href="' + esc(m.logo.href || '/') + '" aria-label="MOSO Bamboo home"><img src="' + esc(m.logo.src) + '" alt="' + esc(m.logo.alt) + '" /></a>' +
+      '<div class="moso-desktop"><div class="moso-util">' + util +
+        '<a class="moso-phone" href="tel:' + tel + '">' + PHONE_SVG + ' ' + phoneLabel + ' </a>' +
+        '<span class="moso-tagline">' + esc(m.tagline) + '</span></div>' +
+        '<nav class="moso-mainnav">' + main + '</nav></div>' +
+      '<div class="moso-mobile-actions"><a class="moso-mobile-phone" href="tel:' + tel + '" aria-label="Call MOSO Bamboo">' + PHONE_SVG + '</a>' +
+        '<button class="moso-mobile-toggle" id="mosoMobileToggle" type="button" aria-label="Toggle navigation">\u2261</button></div>' +
+      '</div>' +
+      '<div class="moso-mobile-menu" id="mosoMobileMenu"><div class="moso-mobile-tagline">' + esc(m.tagline) + '</div>' +
+        '<div class="moso-mobile-util"><a class="moso-phone" href="tel:' + tel + '" style="font-weight:600;color:var(--moso-primary);display:inline-flex;align-items:center;gap:6px;">' + PHONE_SVG_SMALL + ' ' + phoneLabel + ' </a>' + util + '</div>' +
+        '<div class="moso-mobile-list">' + mobile + '</div></div>' +
+      '</div>' + panels + '</header>';
+  }
 
   function addFont(){
     if (document.querySelector('link[href="' + FONT + '"]')) return;
@@ -598,6 +513,12 @@
     l.rel = 'stylesheet'; l.href = FONT;
     document.head.appendChild(l);
   }
+
+  /* Fetch starts straight away; no-cache = always check GitHub for a newer menu.json. */
+  var dataReq = fetch(DATA_URL, { cache: 'no-cache' }).then(function(r){
+    if (!r.ok) throw new Error('menu.json ' + r.status);
+    return r.json();
+  });
 
   function mount(){
     var spot = document.getElementById('moso-menu');
@@ -607,8 +528,10 @@
     st.id = 'moso-menu-css';
     st.textContent = CSS;
     document.head.appendChild(st);
-    spot.innerHTML = MARKUP;
-    behaviour();
+    dataReq.then(function(m){
+      spot.innerHTML = build(m);
+      behaviour();
+    }).catch(function(e){ console.error('[MOSO menu]', e); });
   }
 
   /* ---------- behaviour (unchanged from the pasted embed) ---------- */
