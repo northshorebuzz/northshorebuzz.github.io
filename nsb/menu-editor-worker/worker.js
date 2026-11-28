@@ -1,11 +1,15 @@
 /* ============================================================
-   NSB MENU EDITOR WORKER (Version 2) — Cloudflare Worker
+   NSB MENU EDITOR WORKER (Version 3) — Cloudflare Worker
    The only thing that holds the GitHub key. Editor apps (MOSO
    Menu Editor in HighLevel AI Studio) talk to this, never to GitHub.
 
    Routes (site = "moso" for now):
      GET  /<site>/menu   -> current menu.json, fresh from GitHub (no Pages cache)
      POST /<site>/menu   -> checks the menu, commits it to GitHub
+     GET  /<site>/editor -> the editor page (nsb/menu-editor/index.html,
+                            read fresh from GitHub) with the app key
+                            filled in. This URL is what goes in the
+                            CRM sidebar. No key needed to open it.
    Every request needs:  Authorization: Bearer <editor key>
    POST body: { sha, note, menu }  — note ("what did you change?")
    is required. Each publish adds an entry to the site's change log
@@ -21,6 +25,8 @@
                    "who"), which must be on the site's editor list
                    below. Swap the key here to lock the app out.
    V2 (Nov 28, 2026): one app key + pick-your-name, no passwords.
+   V3 (Nov 28, 2026): serves the editor page itself (same address,
+     so no CORS). Editor changes = push the HTML, no redeploy.
    Vars:
      ALLOWED_ORIGINS  comma list of editor app origins (CORS)
    ============================================================ */
@@ -33,6 +39,7 @@ const SITES = {
   }
 };
 const MAX_BYTES = 50000;
+const EDITOR_PAGE = 'nsb/menu-editor/index.html';
 
 export default {
   async fetch(req, env) {
@@ -49,15 +56,12 @@ export default {
     });
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
 
-    const m = new URL(req.url).pathname.match(/^\/([a-z0-9-]+)\/menu$/);
+    const m = new URL(req.url).pathname.match(/^\/([a-z0-9-]+)\/(menu|editor)\/?$/);
     const site = m && SITES[m[1]];
     if (!site) return reply(404, { ok: false, error: 'Unknown route' });
 
     let editors = {};
     try { editors = JSON.parse(env.EDITORS || '{}'); } catch (e) {}
-    const key = (req.headers.get('Authorization') || '').replace(/^Bearer\s+/i, '');
-    const keyName = key && editors[key];
-    if (!keyName) return reply(401, { ok: false, error: 'Wrong or missing editor key' });
 
     const gh = (path, init = {}) => fetch(`https://api.github.com/repos/${REPO}/${path}`, {
       ...init,
@@ -68,6 +72,21 @@ export default {
         ...(init.headers || {})
       }
     });
+
+    // The editor page, with this site's settings + the app key filled in
+    if (m[2] === 'editor') {
+      if (req.method !== 'GET') return reply(405, { ok: false, error: 'GET only' });
+      const appKey = Object.keys(editors).find(k => editors[k] === 'app');
+      const pg = await gh(`contents/${EDITOR_PAGE}?ref=main`, { headers: { 'Accept': 'application/vnd.github.raw' } });
+      if (!pg.ok || !appKey) return new Response('Menu editor is not available right now.', { status: 503, headers: { 'Content-Type': 'text/plain' } });
+      const cfg = JSON.stringify({ site: m[1], name: site.name, api: `/${m[1]}`, key: appKey }).replace(/</g, '\\u003c');
+      const html = (await pg.text()).replace('</head>', `<script>window.NSB_MENU=${cfg};</script>\n</head>`);
+      return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' } });
+    }
+
+    const key = (req.headers.get('Authorization') || '').replace(/^Bearer\s+/i, '');
+    const keyName = key && editors[key];
+    if (!keyName) return reply(401, { ok: false, error: 'Wrong or missing editor key' });
 
     // Current file (content + sha)
     const cur = await gh(`contents/${site.path}?ref=main`);
