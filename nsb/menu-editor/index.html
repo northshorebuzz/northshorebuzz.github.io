@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ============================================================
-     NSB MENU EDITOR (Version 1) — one page, no build step
+     NSB MENU EDITOR (Version 2) — one page, no build step
      Served by the nsb-menu-editor Cloudflare Worker at
        https://nsb-menu-editor.buzz-026.workers.dev/<site>/editor
      The Worker fills in window.NSB_MENU (site, api, key) as it serves
@@ -9,6 +9,11 @@
      Loads <site>/menu from the Worker, edits it, publishes it back.
      To change the editor: Claude edits this file and pushes.
      No Worker redeploy needed (the Worker reads it from GitHub).
+     V2 (Nov 28, 2026): live preview box. Loads the site's real menu.js
+     (clients/<site>/menu.js, preview mode) in a frame and redraws it
+     on every edit. Desktop / Phone switch.
+     Top menu laid out left to right like the real nav bar (click an
+     item to edit it, arrows move it); dropdown columns side by side.
      ============================================================ -->
 <html lang="en">
 <head>
@@ -83,6 +88,28 @@
   .msg.ok { background:#e8f6ee; color:#0a5a2c; }
   .msg.bad { background:#fdecec; color:var(--red); }
   .loading { padding:60px 20px; text-align:center; color:var(--mute); }
+  .navbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:4px 0 12px; border-bottom:1px solid var(--line); }
+  .chip { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line); background:#fff; border-radius:10px; padding:8px 12px; cursor:pointer; font-weight:700; font-size:14px; }
+  .chip:hover { border-color:#999; }
+  .chip.on { border-color:var(--g); background:#e8f6ee; color:var(--gh); box-shadow:0 0 0 2px rgba(0,159,75,.15); }
+  .chip .dd { width:12px; height:12px; }
+  .chip.addc { font-weight:600; color:var(--g); border-style:dashed; }
+  .selhead { display:flex; align-items:center; gap:6px; margin:14px 0 4px; }
+  .selhead b { flex:1; font-size:14px; }
+  .cols { display:flex; gap:12px; align-items:flex-start; overflow-x:auto; padding-bottom:4px; }
+  .cols .col { flex:1 1 0; min-width:240px; margin:10px 0; }
+  .cols .addcol { flex:0 0 auto; margin-top:10px; }
+  .pv { margin:16px 20px 0; max-width:1160px; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .pvbar { display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--line); background:var(--bg2); }
+  .pvbar b { flex:1; font-size:13px; }
+  .seg { display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:#fff; }
+  .seg button { border:none; background:#fff; padding:5px 12px; cursor:pointer; font-weight:600; font-size:12px; color:var(--mute); }
+  .seg button.on { background:var(--g); color:#fff; }
+  .pvbox { position:relative; overflow:hidden; background:#fff; }
+  .pvbox iframe { border:0; display:block; background:#fff; transform-origin:0 0; }
+  .pvbox.phone { background:var(--bg2); padding:16px 0; }
+  .pvbox.phone iframe { margin:0 auto; border:1px solid var(--line); border-radius:18px; }
+  .pvhint { font-size:11px; color:var(--mute); padding:6px 12px; border-top:1px solid var(--line); }
 </style>
 </head>
 <body>
@@ -92,6 +119,13 @@
   <button class="btn primary" id="publish" type="button" disabled>Publish</button>
 </div>
 <div class="meta" id="meta"></div>
+<div class="pv" id="pv" style="display:none">
+  <div class="pvbar"><b>Preview</b>
+    <span class="seg"><button type="button" class="on" data-mode="desktop">Desktop</button><button type="button" data-mode="phone">Phone</button></span>
+  </div>
+  <div class="pvbox" id="pvbox"></div>
+  <div class="pvhint">Hover or tap the menu to try it. Links don't open here.</div>
+</div>
 <div id="app"><div class="loading">Loading the menu…</div></div>
 
 <div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
@@ -100,7 +134,7 @@
 (function(){
   var CFG = window.NSB_MENU || {};
   var API = CFG.api || '';
-  var orig = null, cur = null, sha = null, editors = [], open = new WeakSet(), publishing = false;
+  var orig = null, cur = null, sha = null, editors = [], open = new WeakSet(), sel = null, publishing = false;
   var LS = 'nsbMenuWho:' + (CFG.site || '');
 
   var $ = function(s){ return document.querySelector(s); };
@@ -197,6 +231,8 @@
     up: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 15l6-6 6 6"/></svg>',
     down: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>',
     del: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>',
+    left: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 6l-6 6 6 6"/></svg>',
+    right: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg>',
     chev: '<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg>'
   };
   function ic(kind, title, fn, disabled){
@@ -260,30 +296,32 @@
     hc.appendChild(h('button', { class: 'btn add', type: 'button', text: '+ Add link', onclick: function(){ cur.utilityLinks.push({ label: '', href: '' }); render(); } }));
     main.appendChild(hc);
 
-    /* Top menu card */
+    /* Top menu card: left to right, like the real nav bar */
     var tc = h('div', { class: 'card' }, [h('h2', { text: 'Top menu' })]);
-    cur.items.forEach(function(it, i, arr){
-      var isOpen = open.has(it);
-      var box = h('div', { class: isOpen ? 'open' : '' });
-      var row = h('div', { class: 'row', style: 'cursor:pointer', onclick: function(){ isOpen ? open.delete(it) : open.add(it); render(); } }, [
-        ic('up', 'Move up', function(){ move(arr, i, -1); }, i === 0),
-        ic('down', 'Move down', function(){ move(arr, i, 1); }, i === arr.length - 1),
-        h('span', { class: 'name', text: it.label || 'New item' }),
-        h('span', { class: 'badge', text: it.type === 'link' ? 'Link' : 'Dropdown' }),
-        ic('del', 'Delete', function(){ remove(arr, i); })
-      ]);
-      var chev = h('span', { class: 'ic', style: 'border:none' }); chev.innerHTML = ICON.chev;
-      if (isOpen) chev.firstChild.classList.add('on');
-      row.insertBefore(chev, row.children[3]);
-      box.appendChild(row);
-      if (isOpen) box.appendChild(itemBody(it));
-      tc.appendChild(box);
+    if (sel && cur.items.indexOf(sel) < 0) sel = null;
+    if (!sel) sel = cur.items[0] || null;
+    var DD = '<svg class="dd" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg>';
+    var bar = h('div', { class: 'navbar' });
+    cur.items.forEach(function(it){
+      var c = h('button', { type: 'button', class: 'chip' + (it === sel ? ' on' : ''), title: it.type === 'link' ? 'Link' : 'Dropdown', onclick: function(){ sel = it; render(); } }, [it.label || 'New item']);
+      if (it.type === 'dropdown') c.insertAdjacentHTML('beforeend', DD);
+      it._chip = c;
+      bar.appendChild(c);
     });
     if (cur.items.length < 8) {
-      tc.appendChild(h('div', {}, [
-        h('button', { class: 'btn add', type: 'button', text: '+ Add link', onclick: function(){ var n = { type: 'link', label: '', href: '' }; cur.items.push(n); open.add(n); render(); } }), ' ',
-        h('button', { class: 'btn add', type: 'button', text: '+ Add dropdown', onclick: addDropdown })
+      bar.appendChild(h('button', { class: 'chip addc', type: 'button', text: '+ Link', onclick: function(){ var n = { type: 'link', label: '', href: '' }; cur.items.push(n); sel = n; render(); } }));
+      bar.appendChild(h('button', { class: 'chip addc', type: 'button', text: '+ Dropdown', onclick: addDropdown }));
+    }
+    tc.appendChild(bar);
+    if (sel) {
+      var i = cur.items.indexOf(sel), arr = cur.items;
+      tc.appendChild(h('div', { class: 'selhead' }, [
+        h('b', { text: (sel.type === 'link' ? 'Link' : 'Dropdown') }),
+        ic('left', 'Move left', function(){ move(arr, i, -1); }, i === 0),
+        ic('right', 'Move right', function(){ move(arr, i, 1); }, i === arr.length - 1),
+        ic('del', 'Delete', function(){ arr.splice(i, 1); sel = arr[Math.max(0, i - 1)] || null; render(); })
       ]));
+      tc.appendChild(itemBody(sel));
     }
     main.appendChild(tc);
 
@@ -308,8 +346,8 @@
   }
 
   function itemBody(it){
-    var b = h('div', { class: 'body' });
-    var rename = function(){ update(); var n = b.parentNode && b.parentNode.querySelector('.row .name'); if (n) n.textContent = it.label || 'New item'; };
+    var b = h('div', { class: 'body', style: 'padding-left:0' });
+    var rename = function(){ update(); if (it._chip) it._chip.firstChild.textContent = it.label || 'New item'; };
     if (it.type === 'link') {
       b.appendChild(h('div', { class: 'grid2' }, [field('Label', it, 'label', 'top', { onChange: rename }), field('Link', it, 'href', 'link', { ph: '/page-name' })]));
       return b;
@@ -318,11 +356,12 @@
     b.appendChild(field('Label', it, 'label', 'top', { onChange: rename }));
     b.appendChild(field('Panel title', p, 'title', 'none', { multi: true }));
     b.appendChild(field('Panel image', p, 'image', 'img', { img: true }));
+    var colsRow = h('div', { class: 'cols' });
     p.columns.forEach(function(col, ci, cols){
       var c = h('div', { class: 'col' }, [h('div', { class: 'colhead' }, [
         h('span', { text: 'Column ' + (ci + 1) }),
-        ic('up', 'Move column left', function(){ move(cols, ci, -1); }, ci === 0),
-        ic('down', 'Move column right', function(){ move(cols, ci, 1); }, ci === cols.length - 1),
+        ic('left', 'Move column left', function(){ move(cols, ci, -1); }, ci === 0),
+        ic('right', 'Move column right', function(){ move(cols, ci, 1); }, ci === cols.length - 1),
         ic('del', 'Delete column', function(){ remove(cols, ci); })
       ])]);
       if (!col.length) c.appendChild(h('div', { class: 'err', style: 'display:block', text: 'Add at least one link' }));
@@ -335,17 +374,16 @@
           ic('del', 'Delete', function(){ remove(col, li); })
         ])]);
         var nm = lk.querySelector('.name');
-        lk.appendChild(h('div', { class: 'grid2' }, [
-          field('Label', l, 'label', 'label', { onChange: function(){ nm.textContent = l.label || 'New link'; update(); } }),
-          field('Link', l, 'href', 'link', { ph: '/page-name' })
-        ]));
+        lk.appendChild(field('Label', l, 'label', 'label', { onChange: function(){ nm.textContent = l.label || 'New link'; update(); } }));
+        lk.appendChild(field('Link', l, 'href', 'link', { ph: '/page-name' }));
         if (p.hoverImages) lk.appendChild(field('Hover image', l, 'image', 'optimg', { img: true }));
         c.appendChild(lk);
       });
       c.appendChild(h('button', { class: 'btn add', type: 'button', text: '+ Add link', onclick: function(){ col.push(p.hoverImages ? { label: '', href: '', image: '' } : { label: '', href: '' }); render(); } }));
-      b.appendChild(c);
+      colsRow.appendChild(c);
     });
-    if (p.columns.length < 4) b.appendChild(h('button', { class: 'btn add', type: 'button', text: '+ Add column', onclick: function(){ p.columns.push([]); render(); } }));
+    if (p.columns.length < 4) colsRow.appendChild(h('button', { class: 'btn add addcol', type: 'button', text: '+ Column', onclick: function(){ p.columns.push([]); render(); } }));
+    b.appendChild(colsRow);
     if (!p.columns.length) b.appendChild(h('div', { class: 'err', style: 'display:block', text: 'Add at least one column' }));
     return b;
   }
@@ -364,7 +402,7 @@
     while (used.indexOf(id) >= 0) id = base + n++;
     var d = { type: 'dropdown', id: id, mobileId: 'm-' + id.toLowerCase(), label: '', _new: true,
       panel: { title: '', image: '', imageAlt: '', hoverImages: false, columns: [[{ label: '', href: '' }]] } };
-    cur.items.push(d); open.add(d); render();
+    cur.items.push(d); sel = d; render();
   }
   /* New dropdowns: id follows the label until first publish, then never changes */
   function fixNewIds(m){
@@ -379,7 +417,7 @@
     });
     return m;
   }
-  function cleanCopy(){ return fixNewIds(clone(cur)); }
+  function cleanCopy(){ return fixNewIds(JSON.parse(JSON.stringify(cur, function(k, v){ return k === '_chip' ? undefined : v; }))); }
 
   function whoSelect(){
     var s = h('select', { id: 'who', onchange: function(){ lsSet(LS, s.value); update(); } }, [h('option', { value: '', text: 'Pick your name' })]
@@ -410,9 +448,60 @@
       if (s.bad) box.appendChild(h('div', { class: 'err', style: 'display:block;margin-top:8px', text: s.bad + ' thing' + (s.bad > 1 ? 's' : '') + ' to fix (marked in red)' }));
     }
     var j = $('#json'); if (j) j.textContent = JSON.stringify(s.menu, null, 2);
+    pvUpdate();
     $('#publish').disabled = !s.ready || publishing;
     $('#publish').title = s.ready ? '' : (!s.changes.length ? 'Make a change first' : s.bad ? 'Fix the fields marked in red' : !s.who ? "Pick who's changing the menu" : 'Add a short note');
   }
+
+  /* ---------- live preview ---------- */
+  var pvFrame = null, pvReady = false, pvMode = 'desktop', pvTimer = null;
+  var DESK_W = 1280, DESK_H = 540, PHONE_W = 390, PHONE_H = 640;
+  function pvSrc(){
+    var js = 'https://northshorebuzz.github.io/clients/' + CFG.site + '/menu.js?v=' + Date.now();
+    return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' +
+      '<style>html,body{margin:0;background:#fff}</style>' +
+      '<script>window.MOSO_MENU_PREVIEW=true;document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a");if(a){e.preventDefault();}},true);<\/script>' +
+      '</head><body><div id="moso-menu"></div><script src="' + js + '"><\/script></body></html>';
+  }
+  function pvSize(){
+    if (!pvFrame) return;
+    var box = $('#pvbox');
+    if (pvMode === 'desktop') {
+      var sc = Math.min(1, box.clientWidth / DESK_W);
+      pvFrame.style.width = DESK_W + 'px'; pvFrame.style.height = DESK_H + 'px';
+      pvFrame.style.transform = 'scale(' + sc + ')';
+      box.style.height = Math.round(DESK_H * sc) + 'px';
+    } else {
+      pvFrame.style.transform = 'none';
+      pvFrame.style.width = PHONE_W + 'px'; pvFrame.style.height = PHONE_H + 'px';
+      box.style.height = 'auto';
+    }
+  }
+  function pvBuild(){
+    var box = $('#pvbox');
+    box.className = 'pvbox' + (pvMode === 'phone' ? ' phone' : '');
+    box.innerHTML = ''; pvReady = false;
+    pvFrame = h('iframe', { title: 'Menu preview' });
+    pvFrame.srcdoc = pvSrc();
+    box.appendChild(pvFrame);
+    pvSize();
+  }
+  function pvSend(){
+    if (!pvFrame || !pvReady || !cur) return;
+    pvFrame.contentWindow.postMessage({ type: 'moso-menu', menu: cleanCopy() }, '*');
+  }
+  function pvUpdate(){ clearTimeout(pvTimer); pvTimer = setTimeout(pvSend, 150); }
+  window.addEventListener('message', function(e){
+    if (pvFrame && e.source === pvFrame.contentWindow && e.data && e.data.type === 'moso-menu-ready') { pvReady = true; pvSend(); }
+  });
+  window.addEventListener('resize', pvSize);
+  Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function(b){
+    b.addEventListener('click', function(){
+      pvMode = b.getAttribute('data-mode');
+      Array.prototype.forEach.call(document.querySelectorAll('.seg button'), function(x){ x.classList.toggle('on', x === b); });
+      pvBuild();
+    });
+  });
 
   /* ---------- publish ---------- */
   function modal(kids){ var sh = $('#sheet'); sh.innerHTML = ''; kids.forEach(function(k){ sh.appendChild(k); }); $('#modal').classList.add('on'); }
@@ -454,7 +543,7 @@
     ]);
   });
 
-  $('#undo').addEventListener('click', function(){ if (!orig) return; cur = clone(orig); open = new WeakSet(); render(); });
+  $('#undo').addEventListener('click', function(){ if (!orig) return; cur = clone(orig); open = new WeakSet(); sel = null; render(); });
 
   /* ---------- load ---------- */
   function load(){
@@ -464,12 +553,13 @@
       .then(function(r){ return r.json(); })
       .then(function(j){
         if (!j.ok) throw new Error(j.error);
-        orig = j.menu; cur = clone(j.menu); sha = j.sha; editors = j.editors || []; open = new WeakSet();
+        orig = j.menu; cur = clone(j.menu); sha = j.sha; editors = j.editors || []; open = new WeakSet(); sel = null;
         var m = [];
         if (orig.version) m.push('Menu version ' + orig.version);
         if (orig.updated) m.push('last changed ' + orig.updated + (orig.updatedBy ? ' by ' + orig.updatedBy : ''));
         $('#meta').textContent = m.join(' · ');
         render();
+        if (!pvFrame) { $('#pv').style.display = ''; pvBuild(); } else pvSend();
       })
       .catch(function(e){ $('#app').innerHTML = ''; $('#app').appendChild(h('div', { class: 'loading', text: "Couldn't load the menu. " + (e.message || '') })); });
   }

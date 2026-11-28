@@ -1,5 +1,5 @@
 /* ============================================================
-   MOSO BAMBOO CANADA — NAV / MEGA MENU (Version 2 on GitHub)
+   MOSO BAMBOO CANADA — NAV / MEGA MENU (Version 3 on GitHub)
    Draws the whole site menu (desktop mega menu + mobile menu)
    from ONE list: clients/moso/menu.json.
    Loaded by the menu's Custom Code element in the header global
@@ -10,6 +10,10 @@
    To change links, labels, logo, phone, tagline or images:
    edit menu.json (MOSO Menu Editor app, or Claude), not this file.
    This file = styles (CSS) + drawing (build) + behaviour.
+   V3 (Nov 28, 2026): preview mode for the Menu Editor. When the page
+     sets window.MOSO_MENU_PREVIEW = true before loading this file, it
+     skips menu.json and draws whatever menu the editor posts to it.
+     The live site never sets that flag, so it's unchanged.
    V2 (Nov 28, 2026): menu split out into menu.json. Draws the
      same HTML as V1. V1 kept at backup/menu-v1-2026-11-28.js.
    V1 (Nov 28, 2026): copied word for word from the "MOSO Menu — Current"
@@ -514,11 +518,18 @@
     document.head.appendChild(l);
   }
 
+  var PREVIEW = window.MOSO_MENU_PREVIEW === true;
+
   /* Fetch starts straight away; no-cache = always check GitHub for a newer menu.json. */
-  var dataReq = fetch(DATA_URL, { cache: 'no-cache' }).then(function(r){
+  var dataReq = PREVIEW ? null : fetch(DATA_URL, { cache: 'no-cache' }).then(function(r){
     if (!r.ok) throw new Error('menu.json ' + r.status);
     return r.json();
   });
+
+  function draw(spot, m){
+    spot.innerHTML = build(m);
+    behaviour();
+  }
 
   function mount(){
     var spot = document.getElementById('moso-menu');
@@ -528,10 +539,18 @@
     st.id = 'moso-menu-css';
     st.textContent = CSS;
     document.head.appendChild(st);
-    dataReq.then(function(m){
-      spot.innerHTML = build(m);
-      behaviour();
-    }).catch(function(e){ console.error('[MOSO menu]', e); });
+    if (PREVIEW) {
+      /* Menu Editor preview: redraw on every message from the editor */
+      window.addEventListener('message', function(e){
+        if (e.data && e.data.type === 'moso-menu' && e.data.menu) {
+          try { draw(spot, e.data.menu); } catch (err) { console.error('[MOSO menu preview]', err); }
+        }
+      });
+      if (window.parent !== window) window.parent.postMessage({ type: 'moso-menu-ready' }, '*');
+      return;
+    }
+    dataReq.then(function(m){ draw(spot, m); })
+      .catch(function(e){ console.error('[MOSO menu]', e); });
   }
 
   /* ---------- behaviour (unchanged from the pasted embed) ---------- */
