@@ -1,0 +1,81 @@
+{
+  "client": "MOSO Bamboo Canada",
+  "name": "MOSO Bamboo Canada",
+  "locationId": "ygWJrQgN18T8KnmLmDHr",
+  "updated": "2026-11-28",
+  "source": "MOSO's brand.css (clients/moso/brand.css). MOSO has its own locked system, not a shared template.",
+  "fonts": [
+    { "name": "Montserrat", "role": "Headings (500) and body (400), locked site-wide" }
+  ],
+  "colours": [
+    { "name": "MOSO Green", "hex": "#009F4B" },
+    { "name": "Green hover", "hex": "#007839" },
+    { "name": "Text", "hex": "#000000" },
+    { "name": "White", "hex": "#FFFFFF" },
+    { "name": "Hairline", "hex": "#E5E2DA" }
+  ],
+  "logos": [
+    {
+      "label": "Logo · NL + Canada flags",
+      "url": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6abffd53f30b488137b91c37.jpg",
+      "bg": "#FFFFFF"
+    }
+  ],
+  "dev": [
+    {
+      "label": "Website Head code: site CSS (after GTM)",
+      "code": "<link rel=\"stylesheet\" href=\"https://northshorebuzz.github.io/clients/moso/brand.css\">"
+    },
+    {
+      "label": "Website Body code: scripts (after GTM noscript)",
+      "code": "<script src=\"https://northshorebuzz.github.io/clients/moso/lightbox.js\" defer></script>"
+    },
+    {
+      "label": "Menu: header Custom Code element",
+      "code": "<div id=\"moso-menu\"></div>\n<script src=\"https://northshorebuzz.github.io/clients/moso/menu.js\" defer></script>"
+    }
+  ],
+  "classes": [
+    {
+      "name": "Text",
+      "where": "Put on the Headline, Paragraph or Bullet List element.",
+      "items": [
+        { "name": "lead-paragraph", "does": "Bigger intro paragraph, 18px." },
+        { "name": "bullet-points", "does": "Small green bullet dots (on a Bullet List)." },
+        { "name": "bold-black", "does": "Bold black text, for a small line that needs to stand out." },
+        { "name": "bold-white", "does": "Bold white text, for a small line on a dark background." },
+        { "name": "on-dark", "does": "White H3 on a dark background." },
+        { "name": "nav-menu-text", "does": "Menu-size text, 14px." },
+        { "name": "font-override", "does": "Escape hatch: lets this one element use its own font, size or colour." }
+      ]
+    },
+    {
+      "name": "Buttons",
+      "where": "Put on the Button element.",
+      "items": [
+        { "name": "btn-primary", "does": "Green pill button, darker green on hover." },
+        { "name": "btn-outline", "does": "Black outline button, fills black on hover." },
+        { "name": "btn-group", "does": "Holds buttons side by side and wraps them on small screens (put on their container)." }
+      ]
+    },
+    {
+      "name": "Images",
+      "where": "Put on the Image element.",
+      "items": [
+        { "name": "img-zoom-hover", "does": "Image grows about 5% on hover." },
+        { "name": "img-lightbox", "does": "Click to open the image full screen." },
+        { "name": "moso-social-icon", "does": "Footer social icon box." }
+      ]
+    },
+    {
+      "name": "Sections and columns",
+      "where": "Put on a Section, Row or Column.",
+      "items": [
+        { "name": "new-hero", "does": "All text inside turns white (hero sections)." },
+        { "name": "project-details", "does": "All text inside turns white (dark sections)." },
+        { "name": "bg-lightbox", "does": "Click the column to open its background image full screen." },
+        { "name": "moso-social-row", "does": "Lays the footer social icons out side by side, centred." }
+      ]
+    }
+  ]
+}
