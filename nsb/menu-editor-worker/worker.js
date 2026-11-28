@@ -1,5 +1,5 @@
 /* ============================================================
-   NSB MENU EDITOR WORKER (Version 1) — Cloudflare Worker
+   NSB MENU EDITOR WORKER (Version 2) — Cloudflare Worker
    The only thing that holds the GitHub key. Editor apps (MOSO
    Menu Editor in HighLevel AI Studio) talk to this, never to GitHub.
 
@@ -15,16 +15,22 @@
    Secrets (set in Cloudflare, never in code or GitHub):
      GITHUB_TOKEN  fine-grained token, Contents read/write on
                    northshorebuzz/northshorebuzz.github.io ONLY
-     EDITORS       JSON {"<key>": "Buzz", "<key>": "Alicia", ...}
-                   one key per person, so each commit says who
-                   published, and one person can be cut off alone
+     EDITORS       JSON {"<key>": "app"}  (or "<key>": "<name>")
+                   "app" = the key built into the editor app. The
+                   person picks their name in the app (sent as
+                   "who"), which must be on the site's editor list
+                   below. Swap the key here to lock the app out.
+   V2 (Nov 28, 2026): one app key + pick-your-name, no passwords.
    Vars:
      ALLOWED_ORIGINS  comma list of editor app origins (CORS)
    ============================================================ */
 
 const REPO = 'northshorebuzz/northshorebuzz.github.io';
 const SITES = {
-  moso: { path: 'clients/moso/menu.json', log: 'clients/moso/menu-changes.md', name: 'MOSO Bamboo Canada' }
+  moso: {
+    path: 'clients/moso/menu.json', log: 'clients/moso/menu-changes.md', name: 'MOSO Bamboo Canada',
+    editors: ['Buzz', 'Alicia', 'Emilio']   // names shown in the app's "Who's changing the menu?" list
+  }
 };
 const MAX_BYTES = 50000;
 
@@ -50,8 +56,8 @@ export default {
     let editors = {};
     try { editors = JSON.parse(env.EDITORS || '{}'); } catch (e) {}
     const key = (req.headers.get('Authorization') || '').replace(/^Bearer\s+/i, '');
-    const who = key && editors[key];
-    if (!who) return reply(401, { ok: false, error: 'Wrong or missing editor key' });
+    const keyName = key && editors[key];
+    if (!keyName) return reply(401, { ok: false, error: 'Wrong or missing editor key' });
 
     const gh = (path, init = {}) => fetch(`https://api.github.com/repos/${REPO}/${path}`, {
       ...init,
@@ -70,7 +76,7 @@ export default {
     const curText = b64decode(curJson.content);
 
     if (req.method === 'GET') {
-      return reply(200, { ok: true, sha: curJson.sha, menu: JSON.parse(curText) });
+      return reply(200, { ok: true, sha: curJson.sha, editors: site.editors, menu: JSON.parse(curText) });
     }
     if (req.method !== 'POST') return reply(405, { ok: false, error: 'GET or POST only' });
 
@@ -78,6 +84,13 @@ export default {
     if (raw.length > MAX_BYTES) return reply(413, { ok: false, error: 'Menu too big' });
     let body;
     try { body = JSON.parse(raw); } catch (e) { return reply(400, { ok: false, error: 'Not valid JSON' }); }
+
+    // Who is publishing: picked in the app (app key), or the key's own name
+    let who = keyName;
+    if (keyName === 'app') {
+      who = String(body.who || '').trim();
+      if (!site.editors.includes(who)) return reply(422, { ok: false, error: "Pick who's changing the menu" });
+    }
 
     // Stops two people overwriting each other: the app sends the sha it loaded.
     if (body.sha && body.sha !== curJson.sha) {
