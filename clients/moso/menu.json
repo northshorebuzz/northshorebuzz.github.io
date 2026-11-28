@@ -1,6 +1,6 @@
 {
   "_about": "MOSO Bamboo Canada site menu. The ONE list the desktop mega menu and the phone menu both build from. Drawn by clients/moso/menu.js. Edited by the MOSO Menu Editor app (saves here through the NSB Cloudflare Worker) or by Claude. Keep it valid JSON.",
-  "version": 1,
+  "version": 2,
   "updated": "2026-11-28",
   "logo": {
     "src": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6abffd53f30b488137b91c37.jpg",
@@ -13,7 +13,10 @@
   },
   "tagline": "Naturally Beautiful Beyond Sustainable",
   "utilityLinks": [
-    { "label": "Order a sample", "href": "/contact-us" }
+    {
+      "label": "Order a sample",
+      "href": "/contact-us"
+    }
   ],
   "items": [
     {
@@ -28,19 +31,47 @@
         "hoverImages": true,
         "columns": [
           [
-            { "label": "Decking", "href": "/decking", "image": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a703687f733ec00fae.jpg" },
-            { "label": "Tiles", "href": "/terra-tiles", "image": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a7908c778faa52cab1.jpg" },
-            { "label": "Siding & Cladding", "href": "/cladding-siding", "image": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a79f5a41333a6369cd.jpg" }
+            {
+              "label": "Decking",
+              "href": "/decking",
+              "image": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a703687f733ec00fae.jpg"
+            },
+            {
+              "label": "Tiles",
+              "href": "/terra-tiles",
+              "image": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a7908c778faa52cab1.jpg"
+            },
+            {
+              "label": "Siding & Cladding",
+              "href": "/cladding-siding",
+              "image": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a79f5a41333a6369cd.jpg"
+            }
           ],
           [
-            { "label": "Privacy Screens", "href": "/privacy-screens", "image": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aad51a216266d0c3a71f84f.jpg" },
-            { "label": "Boards & Beams", "href": "/boards-beams", "image": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a749f830e49b2b344f.jpg" }
+            {
+              "label": "Privacy Screens",
+              "href": "/privacy-screens",
+              "image": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aad51a216266d0c3a71f84f.jpg"
+            },
+            {
+              "label": "Boards & Beams",
+              "href": "/boards-beams",
+              "image": "https://assets.cdn.filesafe.space/ygWJrQgN18T8KnmLmDHr/media/6aa894a749f830e49b2b344f.jpg"
+            }
           ]
         ]
       }
     },
-    { "type": "link", "label": "Architects", "href": "/architects" },
-    { "type": "link", "label": "Projects", "href": "/projects-canada" },
+    {
+      "type": "link",
+      "label": "Architects",
+      "href": "/architects"
+    },
+    {
+      "type": "link",
+      "label": "Projects",
+      "href": "/projects-canada"
+    },
     {
       "type": "dropdown",
       "id": "Canada",
@@ -53,14 +84,32 @@
         "hoverImages": false,
         "columns": [
           [
-            { "label": "About MOSO Canada", "href": "/about-moso-canada" },
-            { "label": "Installation & Maintenance", "href": "/pdf/installation-maintenance-tips-217336" },
-            { "label": "Technical Documents", "href": "/helpful-documents" }
+            {
+              "label": "About MOSO Canada",
+              "href": "/about-moso-canada"
+            },
+            {
+              "label": "Installation & Maintenance",
+              "href": "/pdf/installation-maintenance-tips-217336"
+            },
+            {
+              "label": "Technical Documents",
+              "href": "/helpful-documents"
+            }
           ]
         ]
       }
     },
-    { "type": "link", "label": "Find MOSO", "href": "/find-moso" },
-    { "type": "link", "label": "Contact", "href": "/contact-us" }
-  ]
+    {
+      "type": "link",
+      "label": "Find MOSO",
+      "href": "/find-moso"
+    },
+    {
+      "type": "link",
+      "label": "Contacts",
+      "href": "/contact-us"
+    }
+  ],
+  "updatedBy": "Buzz"
 }
