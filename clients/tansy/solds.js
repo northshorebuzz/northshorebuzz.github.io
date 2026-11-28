@@ -58,16 +58,7 @@
       var tr = el('tr');
       tr.appendChild(el('td', 'st-addr', h.address));
       tr.appendChild(el('td', 'st-area', h.area));
-      tr.appendChild(el('td', 'st-when', h.status));
-      var go = el('td', 'st-go');
-      if (h.url){
-        var a = el('a', 'st-link', 'View →');
-        a.href = h.url; a.target = '_blank'; a.rel = 'noopener';
-        go.appendChild(a);
-      } else {
-        go.appendChild(el('span', 'st-none'));
-      }
-      tr.appendChild(go);
+      tr.appendChild(el('td', 'st-when', 'Sold'));
       body.appendChild(tr);
     });
     table.appendChild(body); wrap.appendChild(table);
